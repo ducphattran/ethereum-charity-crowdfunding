@@ -41,32 +41,28 @@
                 <br />
             </div>
         </div>
-
-        
-        <!-- list -->
-        <div id="campaigns-section">
-            <div class="row title mt-2">
-                <h3>List Campaigns</h3>
+        <!-- transfer -->
+        <div class="col-md-12 mt-2">
+            <div class="row title">
+                <h3>Exchange Token</h3>
             </div>
-            
-            <div class="tab-content row">
-                <table class="table table-dark">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Creator's address</th>
-                            <th>Tokens</th>
-                            <th>Donations</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody id="campaigns-tbody">
-                        <!-- content show here -->
-                    </tbody>
-                </table>
+            <div id="log-in-section" class="mt-3 mx-auto pt-4">
+
+                <!-- <form action="#" id="log-in-form"> -->
+                    <div class="form-group">
+                        <label for="campaign-username" class="font-weight-bold">A Campaign will be created with this username</label>
+                        <input type="text" class="form-control" id="campaign-username" required="true" readonly="true" >
+                    </div>
+                    <div class=" d-none loader-log-in mx-auto my-3"></div>
+                    <div class=" d-none alert alert-danger my-3" id="error_txt">
+                    </div>
+                    <div class="form-group">
+                        <button id="btn-create" type="submit" class="form-control btn btn-primary">
+                            Create</button>
+                    </div>
+                <!-- </form> -->
             </div>
         </div>
-        
     </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

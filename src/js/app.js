@@ -1,10 +1,10 @@
 App = {
     web3Provider: null,
     contracts: {},
-    account: {} ,
+    account: {},
 
     init: function () {
-        if (typeof(Storage) !== "undefined") {
+        if (typeof (Storage) !== "undefined") {
             // Store
             App.account.address = sessionStorage.getItem("address");
             App.account.username = sessionStorage.getItem("username");
@@ -42,23 +42,29 @@ App = {
         return App.bindSession();
     },
 
-    hexToBytes: function(str_data,bytes){
+    hexToBytes: function (str_data, bytes) {
         var hexData = web3.toHex(str_data);
         var length = hexData.length;
-        return web3.padRight(hexData, bytes*2 + 2);
+        return web3.padRight(hexData, bytes * 2 + 2);
     },
 
-    bindSession: function(){
-        if(App.account.username !== null && App.account.password !== null){
+    bindSession: function () {
+        if (App.account.username !== null && App.account.password !== null) {
             console.log()
-            document.getElementById("welcome-user").innerHTML = 
-            '<li class="nav-item mr-2">' +
-            '<a href="/profile.html" class="btn btn-info text-light">Welcome, ' +
-            // '<strong>' +
-            web3.toAscii(App.account.username) +
-            // '</strong>'+
-            '</a>' +
-            '</li>';
+            document.getElementById("welcome-user").innerHTML =
+                '<li class="nav-item mr-2">' +
+                '<a href="/profile.html" class="btn btn-info text-light">Welcome, ' +
+                web3.toAscii(App.account.username) +
+                '</a>' +
+                '</li>' +
+                '<li class="nav-item mr-2">' +
+                '<a href="/campaign.html" class="btn btn-info text-light">Create Campaign' +
+                '</a>' +
+                '</li>' +
+                '<li class="nav-item mr-2">' +
+                '<a href="/transfer.html" class="btn btn-info text-light">Exchange Token' +
+                '</a>' +
+                '</li>';
         }
     }
 };
