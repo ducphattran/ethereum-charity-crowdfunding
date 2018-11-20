@@ -1,0 +1,19 @@
+{
+  "name": "ethereum-charity-funding",
+  "version": "1.0.0",
+  "description": "A Charity funding on ethereum blockchain (ropsten network)",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "lite-server"
+  },
+  "author": "phat duc tran",
+  "license": "ISC",
+  "dependencies": {
+    "lite-server": "^2.4.0",
+    "truffle-hdwallet-provider": "0.0.6"
+  }
+}

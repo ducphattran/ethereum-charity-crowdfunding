@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Charity Funding</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- style.css -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item ml-auto">
+                <a class="nav-link" href="/transfer.html">Transfer</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item mr-2">
+                <a href="/sign-up.html" class="btn btn-info text-light">Sign Up</a>
+            </li>
+            <li class="nav-item">
+                <a href="/log-in.html" class="btn btn-info text-light">Log In</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 mt-3">
+                <h1 class="text-center">Gây quỹ từ thiện</h1>
+                <hr />
+                <br />
+            </div>
+        </div>
+
+        <!-- sign up -->
+        <div class="col-md-12 mt-2">
+            <div class="row title">
+                <h3>Sign up Form</h3>
+            </div>
+            <div id="sign-up-section" class="mt-3 mx-auto pt-4">
+
+                <form action="#" id="sign-up-form">
+                    <div class="form-group">
+                        <label for="username" class="font-weight-bold">Username:</label>
+                        <span id="error_username" class="errors" style="color: red"></span>
+                        <input type="text" class="form-control" id="username" required="true" value="ryan">
+                    </div>
+                    <div class="form-group">
+                        <label for="pwd" class="font-weight-bold">Password:</label>
+                        <span id="error_password" class="errors" style="color: red"></span>
+                        <input type="password" class="form-control" id="pwd" required="required" value="123">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm-pwd" class="font-weight-bold">Confirm Password:</label>
+                        <span id="error_confirm_password" class="errors" style="color: red"></span>
+                        <input type="password" class="form-control" id="confirm-pwd" required="required" value="123">
+                    </div>
+                    <div class="form-group">
+                        <button id="btn-sign-up" type="submit" class="form-control btn btn-primary btn-sign-up">
+                            Sign Up</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/web3.min.js"></script>
+    <script src="js/truffle-contract.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/sign-up.js"></script>
+</body>
+
+</html>
