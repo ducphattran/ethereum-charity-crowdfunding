@@ -3,14 +3,14 @@ pragma solidity ^0.4.24;
 contract Funding {
     
     mapping (address => uint) public addressToIndex; // get Index from Address
-    mapping (bytes32 => uint) public usernameToIndex; // get Index from Username
+    mapping (bytes16 => uint) public usernameToIndex; // get Index from Username
     mapping (address => Account) public addressToAccount; // get Account from Address
     mapping (uint => Campaign) public idToCampaign; // get Campaign from id of a campaign
     mapping (uint => transactionLog) public idToTransLog; // get transactionLog from id of transactionLog
     
     Account[] public accounts;
     address[] public addresses;
-    bytes32[] public usernames;
+    bytes16[] public usernames;
     int256[][] public tokenExchangeLogs;
     uint256[][] public campaignsByIndex;
     uint256[][] public transactionsByIdCamp;
@@ -32,7 +32,7 @@ contract Funding {
     
     struct Account{
         bytes16 username;
-        bytes32 password;
+        bytes password;
         // bytes ipfsHash;
         int token;
     }
@@ -68,7 +68,7 @@ contract Funding {
         _;
     }
 
-    function createAccount(bytes16 username,bytes32 password) public returns (bool success)
+    function createAccount(bytes16 username,bytes password) public returns (bool success)
     {
         require(!hadAccount(msg.sender));
         require(!usernameTaken(username));
@@ -89,11 +89,11 @@ contract Funding {
         return true;
     }
     
-    function changePassword(bytes16 username,bytes32 oladPassword,bytes32 newPassword)
+    function changePassword(bytes16 username,bytes oladPassword,bytes newPassword)
     public returns (bool success){
         require(usernameTaken(username));
         Account memory acc = accounts[usernameToIndex[username]];
-         if(acc.username == username && acc.password == oladPassword){
+         if(acc.username == username && keccak256(acc.password) == keccak256(oladPassword)){
             acc.password = newPassword;
             accounts[usernameToIndex[acc.username]] = acc;
             return true;
@@ -102,10 +102,10 @@ contract Funding {
         }
     }
     
-    function checkAuth(bytes16 username,bytes32 password) public view returns(bool success){
+    function checkAuth(bytes16 username,bytes password) public view returns(bool success){
         require(usernameTaken(username));
         Account memory acc = accounts[usernameToIndex[username]];
-        if(acc.username == username && acc.password == password){
+        if(acc.username == username && keccak256(acc.password) == keccak256(password)){
             return true;
         }else{
             return false;
@@ -124,7 +124,7 @@ contract Funding {
         return true;
     }
     
-    function exchangeToEther(uint256 fromToken,uint256 toEther,bytes16 username, bytes32 password) public returns(bool success){
+    function exchangeToEther(uint256 fromToken,uint256 toEther,bytes16 username, bytes password) public returns(bool success){
         require(checkAuth(username,password));
         require(fromToken >= toEther*1000000000);
         Account memory acc = accounts[usernameToIndex[username]];
@@ -134,7 +134,7 @@ contract Funding {
         return true;
     }
     
-    function getUserProfile(bytes16 username,bytes32 password) public view returns (bytes16 usrname,bytes32 pwd,int256 token){
+    function getUserProfile(bytes16 username,bytes password) public view returns (bytes16 usrname,bytes pwd,int256 token){
         require(checkAuth(username,password));
         Account memory acc = accounts[usernameToIndex[username]];
         return (acc.username,acc.password,acc.token);
@@ -159,7 +159,7 @@ contract Funding {
         return (camp.id,camp.creator,camp.numOfToken,camp.numOfTrans);
     }
  
-    function donate(uint256 tokens,uint256 idCampaign,bytes16 username,bytes32 password) public returns (bool success){
+    function donate(uint256 tokens,uint256 idCampaign,bytes16 username,bytes password) public returns (bool success){
         require(checkAuth(username,password));
         Account memory acc = accounts[usernameToIndex[username]];
         require(acc.token >= int256 (tokens));
@@ -171,8 +171,8 @@ contract Funding {
         camp.numOfTrans += 1;
         idToCampaign[idCampaign] = camp;
         
-        transactionLog memory trans = transactionLog(
-            numOfTrans,usernameToIndex[username],idCampaign,tokens);
+        transactionLog memory trans = transactionLog(numOfTrans,usernameToIndex[username]
+        ,idCampaign,tokens);
         transactionsByIdCamp[idCampaign].push(numOfTrans);
         idToTransLog[numOfTrans] = trans;
         numOfTrans += 1;

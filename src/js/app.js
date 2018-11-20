@@ -33,6 +33,12 @@ App = {
 
         // return App.bindEvents();
     },
+
+    hexToBytes: function(str_data,bytes){
+        var hexData = web3.toHex(str_data);
+        var length = hexData.length;
+        return web3.padRight(hexData, bytes*2 + 2);
+    }
 };
 
 $(function () {

@@ -32,11 +32,14 @@ window.onload = function () {
             //Call to contract
             window.App.contracts.Funding.deployed().then(function (instance) {
                     fundingInstance = instance;
-                    return fundingInstance.createUser(
-                        web3.padRight(web3.fromAscii(inputUsername), 34),
-                        web3.padRight(web3.fromAscii(inputPassword), 34), {
+                    console.log(window.App.hexToBytes(inputUsername, 16));
+                    console.log(window.App.hexToBytes(web3.sha3(inputPassword), 32));
+                    // console.log(window.App.hexToBytes(web3.sha3(inputPassword)));
+                    return fundingInstance.createAccount(
+                        window.App.hexToBytes(inputUsername, 16), //bytes16 username
+                        window.App.hexToBytes(web3.sha3(inputPassword), 32), { //bytes32 password
                             from: account,
-                            gas: 3000000,
+                            gas: 5000000,
                             gasPrice: 100,
                         });
                 }).then(function (result) {
@@ -49,6 +52,8 @@ window.onload = function () {
                     }
                 })
                 .catch(function (err) {
+                    loader.remove();
+                    showAlert("fail", signUpSection);
                     console.log(err);
                 });
         }
