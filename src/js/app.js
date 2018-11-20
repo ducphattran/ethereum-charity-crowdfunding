@@ -6,8 +6,10 @@ App = {
     init: function () {
         if (typeof(Storage) !== "undefined") {
             // Store
+            App.account.address = sessionStorage.getItem("address");
             App.account.username = sessionStorage.getItem("username");
             App.account.password = sessionStorage.getItem("password");
+            App.account.token = sessionStorage.getItem("token");
         } else {
             App.account = {};
         }
@@ -37,7 +39,6 @@ App = {
             App.contracts.Funding.setProvider(App.web3Provider);
             // return App.showListUsers();
         });
-
         return App.bindSession();
     },
 
@@ -52,7 +53,7 @@ App = {
             console.log()
             document.getElementById("welcome-user").innerHTML = 
             '<li class="nav-item mr-2">' +
-            '<a href="/sign-up.html" class="btn btn-info text-light">Welcome, ' +
+            '<a href="/profile.html" class="btn btn-info text-light">Welcome, ' +
             // '<strong>' +
             web3.toAscii(App.account.username) +
             // '</strong>'+

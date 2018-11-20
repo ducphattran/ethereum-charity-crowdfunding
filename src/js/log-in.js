@@ -1,5 +1,5 @@
 window.onload = function () {
-
+    
     document.getElementById("btn-log-in").addEventListener('click', function (event) {
         event.preventDefault();
         //input
@@ -8,11 +8,13 @@ window.onload = function () {
         inputPassword = web3.sha3(inputPassword);
 
         checkAuth(inputUsername, inputPassword);
+        getProfile(inputUsername, inputPassword);
     });
 
      function checkAuth(username, password)  {
         username = window.App.hexToBytes(username, 16);
         password = window.App.hexToBytes(password, 32);
+        var fundingInstance;
         //validate
         window.App.contracts.Funding.deployed().then(function (instance) {
                 fundingInstance = instance;
@@ -23,7 +25,7 @@ window.onload = function () {
                         // Store
                         sessionStorage.setItem("username", username);
                         sessionStorage.setItem("password", password);
-                        window.location.href = "/";
+                        // window.location.href = "/";
                     } else {
                         document.write("Sorry, your browser does not support Web Storage...");
                     }
@@ -39,37 +41,24 @@ window.onload = function () {
             });
     }
 
-    function showAlert(type, element) {
-        var strong = document.createElement("strong");
-        var message = "";
-        var div = document.createElement("div");
+    function getProfile(username, password){
 
-        var backBtn = document.createElement("a");
-        backBtn.className = "btn btn-primary btn-block";
-
-        if (type === "success") {
-            div.className = "alert alert-success";
-            message = document.createTextNode("Your account is registed. Now you can log in with it!");
-
-            backBtn.textContent = "Log In";
-            backBtn.href = "/log-in.html";
-
-            strong.textContent = "Succeeded! ";
-        } else if (type === "fail") {
-
-            div.className = "alert alert-danger";
-            message = document.createTextNode("There was an error occurred during the process.");
-
-            backBtn.textContent = "Home Page";
-            backBtn.href = "/";
-
-            strong.textContent = "Failed! ";
-        }
-
-        div.appendChild(strong);
-        div.appendChild(message);
-
-        element.appendChild(div);
-        element.appendChild(backBtn);
+        username = window.App.hexToBytes(username, 16);
+        password = window.App.hexToBytes(password, 32);
+        //validate
+        window.App.contracts.Funding.deployed().then(function (instance) {
+                fundingInstance = instance;
+                return fundingInstance.getUserProfile.call(username, password);
+            }).then(function (result) {
+                console.log(result);
+                sessionStorage.setItem("address", result[0]);
+                sessionStorage.setItem("username", result[1]);
+                sessionStorage.setItem("password", result[2]);
+                sessionStorage.setItem("token",result[3].toNumber());
+            })
+            .catch(function (err) {
+                console.log(err);
+            });
     }
+
 };

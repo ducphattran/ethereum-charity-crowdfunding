@@ -45,28 +45,21 @@
         <!-- profile -->
         <div class="col-md-12 mt-2">
             <div class="row title">
-                <h3>Log In</h3>
+                <h3>Profile</h3>
             </div>
             <div id="profile-section" class="mt-3 mx-auto pt-4">
-
-                <form action="#" id="profile-form">
-                    <div class="form-group">
-                        <label for="username" class="font-weight-bold">Username:</label>
-                        <input type="text" class="form-control" id="username" required="true" value="ryan">
-                    </div>
-                    <div class="form-group">
-                        <label for="pwd" class="font-weight-bold">Password:</label>
-                        <input type="password" class="form-control" id="pwd" required="required" value="123">
-                    </div>
-                    <div class=" d-none loader-profile mx-auto my-3"></div>
-                    <div class=" d-none alert alert-danger my-3" id="error_txt">
-                        
-                    </div>
-                    <div class="form-group">
-                        <button id="btn-profile" type="submit" class="form-control btn btn-primary">
-                            Log In</button>
-                    </div>
-                </form>
+               <div class="row mx-auto py-2  ">
+                   <strong>Address: </strong>
+                   <p id="address" class="ml-5"></p>
+               </div>
+                <div class="row mx-auto py-2 ">
+                    <strong>Username: </strong>
+                    <p id="username" class="ml-5"></p>
+                </div>
+                <div class="row mx-auto py-2 ">
+                    <strong>Token: </strong>
+                    <p id="token" class="ml-5"></p>
+                </div>
             </div>
         </div>
     </div>

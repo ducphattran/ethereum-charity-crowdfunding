@@ -1,9 +1,4 @@
 window.onload = function () {
-
-    console.log(sessionStorage.getItem("username"));
-    console.log(typeof(sessionStorage.getItem("username")));
-    console.log(sessionStorage.getItem("password"));
-    console.log(typeof(sessionStorage.getItem("password")));
     document.getElementById("btn-sign-up").addEventListener('click', function (event) {
         event.preventDefault();
         //input
