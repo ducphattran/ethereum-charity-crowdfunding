@@ -153,7 +153,7 @@ contract Funding {
         transactionsByIdCamp.push([0]);
         return true;
     }
- 
+    
     function getCampaign (uint256 idCampaign) public view returns (uint256 id,address creator,int256 numOfToken,uint256 numberOfTrans){
         Campaign memory camp = idToCampaign[idCampaign];
         return (camp.id,camp.creator,camp.numOfToken,camp.numOfTrans);

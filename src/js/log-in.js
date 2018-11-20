@@ -25,7 +25,7 @@ window.onload = function () {
                         // Store
                         sessionStorage.setItem("username", username);
                         sessionStorage.setItem("password", password);
-                        // window.location.href = "/";
+                        window.location.href = "/profile.html";
                     } else {
                         document.write("Sorry, your browser does not support Web Storage...");
                     }
