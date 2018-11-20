@@ -1,4 +1,9 @@
 window.onload = function () {
+
+    console.log(sessionStorage.getItem("username"));
+    console.log(typeof(sessionStorage.getItem("username")));
+    console.log(sessionStorage.getItem("password"));
+    console.log(typeof(sessionStorage.getItem("password")));
     document.getElementById("btn-sign-up").addEventListener('click', function (event) {
         event.preventDefault();
         //input
@@ -39,7 +44,7 @@ window.onload = function () {
                         window.App.hexToBytes(inputUsername, 16), //bytes16 username
                         window.App.hexToBytes(web3.sha3(inputPassword), 32), { //bytes32 password
                             from: account,
-                            gas: 5000000,
+                            gas: 3500000,
                             gasPrice: 100,
                         });
                 }).then(function (result) {

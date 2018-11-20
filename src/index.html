@@ -22,11 +22,8 @@
             <li class="nav-item active">
                 <a class="nav-link" href="/">Home</a>
             </li>
-            <li class="nav-item ml-auto">
-                <a class="nav-link" href="/transfer.html">Transfer</a>
-            </li>
         </ul>
-        <ul class="navbar-nav ml-auto">
+        <ul class="navbar-nav ml-auto" id="welcome-user">
             <li class="nav-item mr-2">
                 <a href="/sign-up.html" class="btn btn-info text-light">Sign Up</a>
             </li>
@@ -45,28 +42,33 @@
             </div>
         </div>
 
-        <!-- list -->
-        <div id="list-section">
-            <div class="row title mt-2">
-                <h3>List users</h3>
+        <!-- sign up -->
+        <div class="col-md-12 mt-2">
+            <div class="row title">
+                <h3>Log In</h3>
             </div>
+            <div id="log-in-section" class="mt-3 mx-auto pt-4">
 
-            <div class="tab-content row">
-                <table class="table table-dark">
-                    <thead>
-                        <tr>
-                            <th>Username</th>
-                            <th>Password</th>
-                            <th>Address</th>
-                        </tr>
-                    </thead>
-                    <tbody id="list-user-tbody">
-                        <!-- content show here -->
-                    </tbody>
-                </table>
+                <form action="#" id="log-in-form">
+                    <div class="form-group">
+                        <label for="username" class="font-weight-bold">Username:</label>
+                        <input type="text" class="form-control" id="username" required="true" value="ryan">
+                    </div>
+                    <div class="form-group">
+                        <label for="pwd" class="font-weight-bold">Password:</label>
+                        <input type="password" class="form-control" id="pwd" required="required" value="123">
+                    </div>
+                    <div class=" d-none loader-log-in mx-auto my-3"></div>
+                    <div class=" d-none alert alert-danger my-3" id="error_txt">
+                        
+                    </div>
+                    <div class="form-group">
+                        <button id="btn-log-in" type="submit" class="form-control btn btn-primary">
+                            Log In</button>
+                    </div>
+                </form>
             </div>
         </div>
-
     </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -76,6 +78,7 @@
     <script src="js/web3.min.js"></script>
     <script src="js/truffle-contract.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/log-in.js"></script>
 </body>
 
 </html>

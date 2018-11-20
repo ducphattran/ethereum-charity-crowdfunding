@@ -42,32 +42,29 @@
             </div>
         </div>
 
-        <!-- sign up -->
+        <!-- profile -->
         <div class="col-md-12 mt-2">
             <div class="row title">
-                <h3>Sign up Form</h3>
+                <h3>Log In</h3>
             </div>
-            <div id="sign-up-section" class="mt-3 mx-auto pt-4">
+            <div id="profile-section" class="mt-3 mx-auto pt-4">
 
-                <form action="#" id="sign-up-form">
+                <form action="#" id="profile-form">
                     <div class="form-group">
                         <label for="username" class="font-weight-bold">Username:</label>
-                        <span id="error_username" class="errors" style="color: red"></span>
                         <input type="text" class="form-control" id="username" required="true" value="ryan">
                     </div>
                     <div class="form-group">
                         <label for="pwd" class="font-weight-bold">Password:</label>
-                        <span id="error_password" class="errors" style="color: red"></span>
                         <input type="password" class="form-control" id="pwd" required="required" value="123">
                     </div>
-                    <div class="form-group">
-                        <label for="confirm-pwd" class="font-weight-bold">Confirm Password:</label>
-                        <span id="error_confirm_password" class="errors" style="color: red"></span>
-                        <input type="password" class="form-control" id="confirm-pwd" required="required" value="123">
+                    <div class=" d-none loader-profile mx-auto my-3"></div>
+                    <div class=" d-none alert alert-danger my-3" id="error_txt">
+                        
                     </div>
                     <div class="form-group">
-                        <button id="btn-sign-up" type="submit" class="form-control btn btn-primary btn-sign-up">
-                            Sign Up</button>
+                        <button id="btn-profile" type="submit" class="form-control btn btn-primary">
+                            Log In</button>
                     </div>
                 </form>
             </div>
@@ -81,7 +78,7 @@
     <script src="js/web3.min.js"></script>
     <script src="js/truffle-contract.js"></script>
     <script src="js/app.js"></script>
-    <script src="js/sign-up.js"></script>
+    <script src="js/profile.js"></script>
 </body>
 
-</html>
+</html> 

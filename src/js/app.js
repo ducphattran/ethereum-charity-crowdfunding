@@ -1,9 +1,16 @@
 App = {
     web3Provider: null,
     contracts: {},
-    account: null ,
+    account: {} ,
 
     init: function () {
+        if (typeof(Storage) !== "undefined") {
+            // Store
+            App.account.username = sessionStorage.getItem("username");
+            App.account.password = sessionStorage.getItem("password");
+        } else {
+            App.account = {};
+        }
         return App.initWeb3();
     },
 
@@ -31,13 +38,27 @@ App = {
             // return App.showListUsers();
         });
 
-        // return App.bindEvents();
+        return App.bindSession();
     },
 
     hexToBytes: function(str_data,bytes){
         var hexData = web3.toHex(str_data);
         var length = hexData.length;
         return web3.padRight(hexData, bytes*2 + 2);
+    },
+
+    bindSession: function(){
+        if(App.account.username !== null && App.account.password !== null){
+            console.log()
+            document.getElementById("welcome-user").innerHTML = 
+            '<li class="nav-item mr-2">' +
+            '<a href="/sign-up.html" class="btn btn-info text-light">Welcome, ' +
+            // '<strong>' +
+            web3.toAscii(App.account.username) +
+            // '</strong>'+
+            '</a>' +
+            '</li>';
+        }
     }
 };
 
