@@ -2,23 +2,25 @@ pragma solidity ^0.4.24;
 
 contract Funding {
     
-    mapping (address => uint) public addressToIndex; // get Index from Address
-    mapping (bytes16 => uint) public usernameToIndex; // get Index from Username
-    mapping (address => Account) public addressToAccount; // get Account from Address
-    mapping (uint => Campaign) public idToCampaign; // get Campaign from id of a campaign
-    mapping (uint => transactionLog) public idToTransLog; // get transactionLog from id of transactionLog
+    mapping (address => uint) private addressToIndex; // get Index from Address
+    mapping (bytes16 => uint) private usernameToIndex; // get Index from Username
+    mapping (address => Account) private addressToAccount; // get Account from Address
+    mapping (bytes => uint) private ipfsHashToIndex;
+    mapping (uint => Campaign) private idToCampaign; // get Campaign from id of a campaign
+    mapping (uint => transactionLog) private idToTransLog; // get transactionLog from id of transactionLog
     
-    Account[] public accounts;
-    address[] public addresses;
-    bytes16[] public usernames;
-    int256[][] public tokenExchangeLogs;
-    uint256[][] public campaignsByIndex;
-    uint256[][] public transactionsByIdCamp;
-    uint256 public numOfCamp;
-    uint256 public numOfTrans;
+    Account[] private accounts;
+    address[] private addresses;
+    bytes16[] private usernames;
+    bytes[] private ipfsHashes; 
+    int256[][] private tokenExchangeLogs;
+    uint256[][] private campaignsByIndex;
+    uint256[][] private transactionsByIdCamp;
+    uint256 private numOfCamp;
+    uint256 private numOfTrans;
     
     constructor () public {
-        Account memory acc = Account("admin","charity",0);
+        Account memory acc = Account("admin","charity","not-available",0);
         
         accounts.push(acc);
         addresses.push(msg.sender);
@@ -33,7 +35,7 @@ contract Funding {
     struct Account{
         bytes16 username;
         bytes password;
-        // bytes ipfsHash;
+        bytes ipfsHash;
         int token;
     }
     
@@ -42,6 +44,7 @@ contract Funding {
         uint256 fromIndexAcc;
         uint toIdCamp;
         uint numOfToken;
+        bytes ipfsHash;
     }
     
     struct Campaign{
@@ -49,6 +52,7 @@ contract Funding {
         address creator;
         int numOfToken;
         uint numOfTrans;
+        bytes ipfsHash;
     }
     
     function getBal() public view returns(uint256 bal){
@@ -68,23 +72,23 @@ contract Funding {
         _;
     }
 
-    function createAccount(bytes16 username,bytes password) public returns (bool success)
+    function createAccount(bytes16 username,bytes password,bytes ipfsHash) public returns (bool success)
     {
         require(!hadAccount(msg.sender));
         require(!usernameTaken(username));
-        Account memory acc = Account (username,password,0);
-        // Campaign memory camp = Campaign(0,msg.sender,0);
+        Account memory acc = Account (username,password,ipfsHash,0);
         
         accounts.push(acc);
         usernames.push(username);
         addresses.push(msg.sender);
+        ipfsHashes.push(ipfsHash);
         tokenExchangeLogs.push([0]);
         campaignsByIndex.push([0]);
         
         addressToIndex[msg.sender] = addresses.length - 1;
         addressToAccount[msg.sender] = acc;
         usernameToIndex[username] = usernames.length - 1;
-        // idToCampaign[numOfCamp+1] = camp;
+        ipfsHashToIndex[ipfsHash] = ipfsHashes.length - 1;
         
         return true;
     }
@@ -117,7 +121,7 @@ contract Funding {
         // get Account
         Account storage acc = addressToAccount[msg.sender];
         acc.token += numOfToken;
-        accounts[usernameToIndex[acc.username]] = Account(acc.username,acc.password,acc.token);
+        accounts[usernameToIndex[acc.username]] = Account(acc.username,acc.password,acc.ipfsHash,acc.token);
         // add to tokenExchangeLogs
         tokenExchangeLogs[usernameToIndex[acc.username]].push(numOfToken);
         
@@ -144,9 +148,9 @@ contract Funding {
         return tokenExchangeLogs[usernameToIndex[username]];
     }
     
-    function createCampaign(bytes16 username) public returns (bool success){
+    function createCampaign(bytes16 username,bytes campaignIpfsHash) public returns (bool success){
         require(usernameTaken(username));
-        Campaign memory camp = Campaign(numOfCamp,addresses[usernameToIndex[username]],0,0);
+        Campaign memory camp = Campaign(numOfCamp,addresses[usernameToIndex[username]],0,0,campaignIpfsHash);
         idToCampaign[numOfCamp] = camp;
         campaignsByIndex[usernameToIndex[username]].push(numOfCamp);
         numOfCamp += 1;
@@ -159,7 +163,7 @@ contract Funding {
         return (camp.id,camp.creator,camp.numOfToken,camp.numOfTrans);
     }
  
-    function donate(uint256 tokens,uint256 idCampaign,bytes16 username,bytes password) public returns (bool success){
+    function donate(uint256 tokens,uint256 idCampaign,bytes16 username,bytes password,bytes transIpfsHash) public returns (bool success){
         require(checkAuth(username,password));
         Account memory acc = accounts[usernameToIndex[username]];
         require(acc.token >= int256 (tokens));
@@ -172,7 +176,7 @@ contract Funding {
         idToCampaign[idCampaign] = camp;
         
         transactionLog memory trans = transactionLog(numOfTrans,usernameToIndex[username]
-        ,idCampaign,tokens);
+        ,idCampaign,tokens,transIpfsHash);
         transactionsByIdCamp[idCampaign].push(numOfTrans);
         idToTransLog[numOfTrans] = trans;
         numOfTrans += 1;
