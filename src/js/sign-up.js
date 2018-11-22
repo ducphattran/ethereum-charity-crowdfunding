@@ -1,13 +1,51 @@
-window.onload = function () {
-    document.getElementById("btn-sign-up").addEventListener('click', function (event) {
-        event.preventDefault();
-        //input
+SignUp = {
+    web3Provider: null,
+    contracts: {},
+
+    init: function () {
+
+        return SignUp.initWeb3();
+    },
+
+    initWeb3: function () {
+        // Is there an injected web3 instance?
+        if (typeof web3 !== 'undefined') {
+            SignUp.web3Provider = web3.currentProvider;
+        } else {
+            // If no injected web3 instance is detected, fall back to Ganache
+            SignUp.web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
+        }
+        web3 = new Web3(SignUp.web3Provider);
+
+        return SignUp.initContract();
+    },
+
+    initContract: function () {
+        $.getJSON('Funding.json', function (data) {
+            // Get the necessary contract artifact file and instantiate it with truffle-contract
+            var FundingArtifact = data;
+            SignUp.contracts.Funding = TruffleContract(FundingArtifact);
+
+            // Set the provider for our contract
+            SignUp.contracts.Funding.setProvider(SignUp.web3Provider);
+
+        });
+
+        return SignUp.bindEvents();
+    },
+
+    bindEvents: function () {
+        $(document).on('click', '#btn-sign-up', SignUp.createAccount);
+    },
+
+    createAccount: function (event) {
+        //get input
         var inputUsername = document.getElementById("username").value;
         var inputPassword = document.getElementById("pwd").value;
         var inputConfirmPassword = document.getElementById("confirm-pwd").value;
 
         // is validated
-        if (validateForm(inputUsername, inputPassword, inputConfirmPassword)) {
+        if (SignUp.validateForm(inputUsername, inputPassword, inputConfirmPassword)) {
             var signUpSection = document.getElementById("sign-up-section");
             var signUpForm = document.getElementById("sign-up-form");
 
@@ -30,7 +68,7 @@ window.onload = function () {
             });
 
             //Call to contract
-            window.App.contracts.Funding.deployed().then(function (instance) {
+            SignUp.contracts.Funding.deployed().then(function (instance) {
                     fundingInstance = instance;
                     console.log(window.App.hexToBytes(inputUsername, 16));
                     console.log(window.App.hexToBytes(web3.sha3(inputPassword), 32));
@@ -46,20 +84,20 @@ window.onload = function () {
                     console.log(result);
                     loader.remove();
                     if (result.receipt.status === "0x0") {
-                        showAlert("fail", signUpSection);
+                        SignUp.showAlert("fail", signUpSection);
                     } else {
-                        showAlert("success", signUpSection);
+                        SignUp.showAlert("success", signUpSection);
                     }
                 })
                 .catch(function (err) {
                     loader.remove();
-                    showAlert("fail", signUpSection);
+                    SignUp.showAlert("fail", signUpSection);
                     console.log(err);
                 });
         }
-    });
+    },
 
-    function validateForm(username, password, confirmPassword) {
+    validateForm: function(username, password, confirmPassword) {
 
         // Reset errors
         errorsArray = document.getElementsByClassName("errors");
@@ -82,9 +120,8 @@ window.onload = function () {
             document.getElementsByClassName("errors").innerText = "";
             return true;
         }
-    }
-
-    function showAlert(type, element) {
+    },
+    showAlert: function (type, element) {
         var strong = document.createElement("strong");
         var message = "";
         var div = document.createElement("div");
@@ -117,4 +154,11 @@ window.onload = function () {
         element.appendChild(div);
         element.appendChild(backBtn);
     }
+
 };
+
+$(function () {
+    $(window).load(function () {
+        SignUp.init();
+    });
+});

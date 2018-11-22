@@ -29,7 +29,6 @@ LogIn = {
             // Set the provider for our contract
             LogIn.contracts.Funding.setProvider(LogIn.web3Provider);
 
-            // return LogIn.showCampaigns();
         });
 
         return LogIn.bindEvents();
