@@ -4,9 +4,41 @@ Campaign = {
 
     init: function () {
         var campUsername = document.getElementById("campaign-username");
-        if(campUsername){
+        if (campUsername) {
             campUsername.value = web3.toAscii(window.App.account.username);
         }
+
+        //
+        const node = new Ipfs({
+            repo: 'ipfs-' + Math.random()
+        })
+        node.once('ready', () => {
+            console.log('Online status: ', node.isOnline() ? 'online' : 'offline')
+            // You can write more code here to use it. Use methods like 
+            // node.files.add, node.files.get. See the API docs here:
+            // https://github.com/ipfs/interface-ipfs-core
+            var obj = {
+                "id" : 3,
+                "name": "ryan"
+            };
+            node.files.add(new node.types.Buffer(JSON.stringify(obj)), (err, filesAdded) => {
+                if (err) {
+                    return console.error('Error - ipfs add', err, res)
+                }
+
+                filesAdded.forEach((file) => console.log('successfully stored', file.hash))
+            })
+
+            node.files.cat('Qmak2PftRvJYyZJkWH5ud9J48RXvD46DUJeH2ovbD95qNm', function (err, data) {
+                if (err) {
+                    return console.error('Error - ipfs files cat', err, res)
+                }
+                var jsondata = data.toString();
+                jsondata = JSON.parse(jsondata);
+                console.log(jsondata)
+            })
+        })
+
         return Campaign.initWeb3();
     },
 
@@ -34,7 +66,7 @@ Campaign = {
 
             return Campaign.showCampaigns();
         });
-        
+
         return Campaign.bindEvents();
     },
 
@@ -42,7 +74,7 @@ Campaign = {
         $(document).on('click', '#btn-create', Campaign.create);
     },
 
-    create: function(event){
+    create: function (event) {
         event.preventDefault();
         var fundingInstance;
         var account;
@@ -56,7 +88,7 @@ Campaign = {
         Campaign.contracts.Funding.deployed().then(function (instance) {
             fundingInstance = instance;
             // Execute adopt as a transaction by sending account 
-            return fundingInstance.createCampaign(window.App.account.username,{
+            return fundingInstance.createCampaign(window.App.account.username, {
                 from: account,
                 gas: 3000000,
                 gasPrice: 100,
@@ -74,7 +106,7 @@ Campaign = {
         });
     },
 
-    showCampaigns : function(){ 
+    showCampaigns: function () {
         var tbody = document.getElementById("campaigns-tbody");
         while (tbody.firstChild) {
             tbody.removeChild(tbody.firstChild);
@@ -113,7 +145,7 @@ Campaign = {
                         col3.appendChild(document.createTextNode(campaign[2].toNumber()));
                         col4.appendChild(document.createTextNode(campaign[3].toNumber()));
                         col5.appendChild(donateBtn);
-                        
+
                         row.appendChild(col1);
                         row.appendChild(col2);
                         row.appendChild(col3);
