@@ -2,7 +2,7 @@ App = {
     web3Provider: null,
     contracts: {},
     account: {},
-
+    ipfsHash: null,
     init: function () {
         if (typeof (Storage) !== "undefined") {
             // Store
@@ -10,6 +10,7 @@ App = {
             App.account.username = sessionStorage.getItem("username");
             App.account.password = sessionStorage.getItem("password");
             App.account.token = sessionStorage.getItem("token");
+            App.account.ipfsHash = sessionStorage.getItem("ipfsHash");
         } else {
             App.account = {};
         }
@@ -45,7 +46,11 @@ App = {
     hexToBytes: function (str_data, bytes) {
         var hexData = web3.toHex(str_data);
         var length = hexData.length;
-        return web3.padRight(hexData, bytes * 2 + 2);
+        if (length > 66 && bytes === "bytes") {
+            return hexData;
+        } else {
+            return web3.padRight(hexData, bytes * 2 + 2);
+        }
     },
 
     bindSession: function () {
@@ -66,7 +71,35 @@ App = {
                 '</a>' +
                 '</li>';
         }
-    }
+    },
+
+    addDataToIpfs: function (jsonData) {
+        const node = new Ipfs({
+            repo: 'ipfs-' + Math.random()
+        })
+        node.once('ready', () => {
+            node.files.add(new node.types.Buffer(JSON.stringify(jsonData)), function (error, filesAdded) {
+                localStorage.setItem("ipfsHash", filesAdded[0].hash.toString());
+            });
+
+        })
+    },
+
+    catDataFromIpfs: function (ipfsHash) {
+        const node = new Ipfs({
+            repo: 'ipfs-' + Math.random()
+        })
+        node.once('ready', () => {
+            node.files.cat(ipfsHash, function (err, data) {
+                if (err) {
+                    return console.error('Error - ipfs files cat', err, res)
+                }
+                var jsondata = data.toString();
+                localStorage.setItem("dataFromIpfs", jsondata);
+            })
+        })
+    },
+
 };
 
 $(function () {
