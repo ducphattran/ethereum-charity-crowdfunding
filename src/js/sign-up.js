@@ -3,7 +3,39 @@ SignUp = {
     contracts: {},
 
     init: function () {
+        // const node = new Ipfs({
+        //     repo: 'ipfs-' + Math.random()
+        // })
+        // node.once('ready', () => {
+        //     console.log('Online status: ', node.isOnline() ? 'online' : 'offline')
+        //     // You can write more code here to use it. Use methods like 
+        //     // node.files.add, node.files.get. See the API docs here:
+        //     // https://github.com/ipfs/interface-ipfs-core
+        //     var obj = {
+        //         "id": 3,
+        //         "name": "ryan"
+        //     };
+        //     node.files.add(new node.types.Buffer(JSON.stringify(obj)), (err, filesAdded) => {
+        //         if (err) {
+        //             return console.error('Error - ipfs add', err, res)
+        //         }
 
+        //         console.log(filesAdded);
+        //         filesAdded.forEach((file) => {
+        //             console.log('successfully stored', file.hash)
+        //         })
+        //     })
+
+        //     // node.files.cat('Qmak2PftRvJYyZJkWH5ud9J48RXvD46DUJeH2ovbD95qNm', function (err, data) {
+        //     //     if (err) {
+        //     //         return console.error('Error - ipfs files cat', err, res)
+        //     //     }
+        //     //     var jsondata = data.toString();
+        //     //     jsondata = JSON.parse(jsondata);
+        //     //     console.log(jsondata)
+        //     // })
+        // })
+        // //        
         return SignUp.initWeb3();
     },
 
@@ -40,6 +72,8 @@ SignUp = {
 
     createAccount: function (event) {
         //get input
+        var inputFullname = document.getElementById("fullname").value;
+        var inputEmail = document.getElementById("email").value;
         var inputUsername = document.getElementById("username").value;
         var inputPassword = document.getElementById("pwd").value;
         var inputConfirmPassword = document.getElementById("confirm-pwd").value;
@@ -57,6 +91,15 @@ SignUp = {
             loader.className = "loader-sign-up mx-auto mt-5";
             signUpSection.appendChild(loader);
 
+            //save to ipfs
+            var jsonData = {
+                "username": inputUsername,
+                "fullname": inputFullname,
+                "email": inputEmail,
+            };
+            window.App.addDataToIpfs(jsonData);
+            var ipfsHash = localStorage.getItem("ipfsHash");
+
             var fundingInstance;
             var account;
             // Get account
@@ -72,10 +115,11 @@ SignUp = {
                     fundingInstance = instance;
                     console.log(window.App.hexToBytes(inputUsername, 16));
                     console.log(window.App.hexToBytes(web3.sha3(inputPassword), 32));
-                    // console.log(window.App.hexToBytes(web3.sha3(inputPassword)));
+                    console.log(window.App.hexToBytes(ipfsHash, "bytes"));
                     return fundingInstance.createAccount(
                         window.App.hexToBytes(inputUsername, 16), //bytes16 username
-                        window.App.hexToBytes(web3.sha3(inputPassword), 32), { //bytes32 password
+                        window.App.hexToBytes(web3.sha3(inputPassword), 32), //bytes32 password
+                        window.App.hexToBytes(ipfsHash, "bytes"), { //bytes ipfshHash
                             from: account,
                             gas: 3500000,
                             gasPrice: 100,
@@ -87,6 +131,7 @@ SignUp = {
                         SignUp.showAlert("fail", signUpSection);
                     } else {
                         SignUp.showAlert("success", signUpSection);
+
                     }
                 })
                 .catch(function (err) {
@@ -94,10 +139,11 @@ SignUp = {
                     SignUp.showAlert("fail", signUpSection);
                     console.log(err);
                 });
+
         }
     },
 
-    validateForm: function(username, password, confirmPassword) {
+    validateForm: function (username, password, confirmPassword) {
 
         // Reset errors
         errorsArray = document.getElementsByClassName("errors");
@@ -109,7 +155,6 @@ SignUp = {
         if (username.length < 4) {
             document.getElementById("error_username").innerText = "Username has at least 4 characters";
             return false;
-
         } else if (password.length < 3) {
             document.getElementById("error_password").innerText = "Password has at least 3 characters";
             return false;
