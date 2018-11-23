@@ -74,7 +74,6 @@ App = {
             campaignATag.href = "/campaign.html";
             campaignATag.innerText = "Create Campaign";
             campaignLiTag.appendChild(campaignATag);
-            console.log(nav);
             nav.appendChild(campaignLiTag);
             // add transfer nav-link    
             var transferLiTag = document.createElement("li");
@@ -85,6 +84,8 @@ App = {
             transferATag.innerText = "Exchange Token";
             transferLiTag.appendChild(transferATag);
             nav.appendChild(transferLiTag);
+        }else{
+            
         }
     },
 

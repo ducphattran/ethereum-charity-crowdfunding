@@ -55,11 +55,13 @@ Profile = {
         document.getElementById("username").innerText = username;
         document.getElementById("token").innerText = token;
 
-        return Profile.bindEvent
+        return Profile.bindEvents();
     },
 
-    signOut: function(){
+    signOut: function(event){
+        event.preventDefault();
         sessionStorage.clear();
+        return window.location.href = "/log-in.html";
     },
 
 };

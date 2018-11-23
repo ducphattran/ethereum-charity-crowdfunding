@@ -107,13 +107,7 @@ Campaign = {
     },
 
     showCampaigns: function () {
-        var tbody = document.getElementById("campaigns-tbody");
-        while (tbody.firstChild) {
-            tbody.removeChild(tbody.firstChild);
-        }
-
         var fundingInstance;
-        var lengthOfUsers = 1;
 
         Campaign.contracts.Funding.deployed().then(function (instance) {
             fundingInstance = instance;
