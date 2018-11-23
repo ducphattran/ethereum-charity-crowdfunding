@@ -148,7 +148,8 @@ contract Funding {
         return tokenExchangeLogs[usernameToIndex[username]];
     }
     
-    function createCampaign(bytes16 username,bytes campaignIpfsHash) public returns (bool success){
+    function createCampaign(bytes16 username,bytes campaignIpfsHash) public 
+    returns (bool success){
         require(usernameTaken(username));
         Campaign memory camp = Campaign(numOfCamp,addresses[usernameToIndex[username]],0,0,campaignIpfsHash);
         idToCampaign[numOfCamp] = camp;
@@ -158,9 +159,10 @@ contract Funding {
         return true;
     }
     
-    function getCampaign (uint256 idCampaign) public view returns (uint256 id,address creator,int256 numOfToken,uint256 numberOfTrans){
+    function getCampaign (uint256 idCampaign) public 
+    view returns (uint256 id,address creator,int256 numOfToken,uint256 numberOfTrans,bytes ipfsHash){
         Campaign memory camp = idToCampaign[idCampaign];
-        return (camp.id,camp.creator,camp.numOfToken,camp.numOfTrans);
+        return (camp.id,camp.creator,camp.numOfToken,camp.numOfTrans,camp.ipfsHash);
     }
  
     function donate(uint256 tokens,uint256 idCampaign,bytes16 username,bytes password,bytes transIpfsHash) public returns (bool success){
