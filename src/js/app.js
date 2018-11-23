@@ -55,21 +55,36 @@ App = {
 
     bindSession: function () {
         if (App.account.username !== null && App.account.password !== null) {
-            console.log()
+            // Add welcome
             document.getElementById("welcome-user").innerHTML =
                 '<li class="nav-item mr-2">' +
-                '<a href="/profile.html" class="btn btn-info text-light">Welcome, ' +
+                '<a href="/profile.html" id="btn-profile" class="btn btn-info text-light">Welcome, ' +
                 web3.toAscii(App.account.username) +
                 '</a>' +
                 '</li>' +
                 '<li class="nav-item mr-2">' +
-                '<a href="/campaign.html" class="btn btn-info text-light">Create Campaign' +
-                '</a>' +
-                '</li>' +
-                '<li class="nav-item mr-2">' +
-                '<a href="/transfer.html" class="btn btn-info text-light">Exchange Token' +
-                '</a>' +
-                '</li>';
+                '<a href="/profile.html" id="btn-sign-out" class="btn btn-info text-light">Log Out' +
+                '</a>' ;
+            var nav = document.getElementById("nav");
+            // add campaign nav-link    
+            var campaignLiTag = document.createElement("li");
+            campaignLiTag.className = "nav-item active";
+            var campaignATag = document.createElement("a");
+            campaignATag.className = "nav-link";
+            campaignATag.href = "/campaign.html";
+            campaignATag.innerText = "Create Campaign";
+            campaignLiTag.appendChild(campaignATag);
+            console.log(nav);
+            nav.appendChild(campaignLiTag);
+            // add transfer nav-link    
+            var transferLiTag = document.createElement("li");
+            transferLiTag.className = "nav-item active";
+            var transferATag = document.createElement("a");
+            transferATag.className = "nav-link";
+            transferATag.href = "/transfer.html";
+            transferATag.innerText = "Exchange Token";
+            transferLiTag.appendChild(transferATag);
+            nav.appendChild(transferLiTag);
         }
     },
 

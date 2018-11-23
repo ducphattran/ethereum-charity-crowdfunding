@@ -28,9 +28,15 @@ Profile = {
             // Set the provider for our contract
             Profile.contracts.Funding.setProvider(Profile.web3Provider);
 
+            return Profile.getProfile();
         });
+        
+        return Profile.bindEvents();
+    },
 
-        return Profile.getProfile();
+    bindEvents: function () {
+        $(document).on('click', '#btn-profile', Profile.getProfile);
+        $(document).on('click', '#btn-sign-out', Profile.signOut);
     },
 
     getProfile: function () {
@@ -49,9 +55,11 @@ Profile = {
         document.getElementById("username").innerText = username;
         document.getElementById("token").innerText = token;
 
-        
-        
+        return Profile.bindEvent
+    },
 
+    signOut: function(){
+        sessionStorage.clear();
     },
 
 };
