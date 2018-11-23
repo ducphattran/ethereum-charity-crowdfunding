@@ -138,10 +138,10 @@ contract Funding {
         return true;
     }
     
-    function getUserProfile(bytes16 username,bytes password) public view returns (address addr,bytes16 usrname,bytes pwd,int256 token){
+    function getUserProfile(bytes16 username,bytes password) public view returns (address addr,bytes16 usrname,bytes pwd,int256 token,bytes ipfsHash){
         require(checkAuth(username,password));
         Account memory acc = accounts[usernameToIndex[username]];
-        return (addresses[usernameToIndex[username]],acc.username,acc.password,acc.token);
+        return (addresses[usernameToIndex[username]],acc.username,acc.password,acc.token,acc.ipfsHash);
     }
 
     function getTokenExchangeLog (bytes16 username) public view returns(int256[] tokensExchange){
