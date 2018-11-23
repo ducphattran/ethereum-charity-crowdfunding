@@ -47,20 +47,36 @@
             <div class="row title">
                 <h3>Profile</h3>
             </div>
-            <div id="profile-section" class="mt-3 mx-auto pt-4">
-               <div class="row mx-auto py-2  ">
-                   <strong>Address: </strong>
-                   <p id="address" class="ml-5"></p>
-               </div>
-                <div class="row mx-auto py-2 ">
-                    <strong>Username: </strong>
-                    <p id="username" class="ml-5"></p>
-                </div>
-                <div class="row mx-auto py-2 ">
-                    <strong>Token: </strong>
-                    <p id="token" class="ml-5"></p>
-                </div>
+            <div class="tab-content row">
+                <table class="table table-light mt-3 mx-auto pt-4">
+                    <thead>
+                    </thead>
+                    <tbody id="campaigns-tbody">
+                        <!-- content show here -->
+                        <tr>
+                            <td><strong>Fullname: </strong></td>
+                            <td><p id="fullname" class="ml-5"></p></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Email: </strong></td>
+                            <td><p id="email" class="ml-5"></p></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Wallet's Address: </strong></td>
+                            <td><p id="address" class="ml-5"></p></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Username: </strong></td>
+                            <td><p id="username" class="ml-5"></p></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Token: </strong></td>
+                            <td><p id="token" class="ml-5"></p></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
+
         </div>
     </div>
 
@@ -70,8 +86,9 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/web3.min.js"></script>
     <script src="js/truffle-contract.js"></script>
+    <script src="https://unpkg.com/ipfs/dist/index.min.js"></script>
     <script src="js/app.js"></script>
     <script src="js/profile.js"></script>
 </body>
 
-</html> 
+</html>

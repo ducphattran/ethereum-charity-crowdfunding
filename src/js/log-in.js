@@ -86,11 +86,12 @@ LogIn = {
                 sessionStorage.setItem("username", result[1]);
                 sessionStorage.setItem("password", result[2]);
                 sessionStorage.setItem("token",result[3].toNumber());
+                sessionStorage.setItem("ipfsHash", result[4]);
+                return window.location.href = "/profile.html";
             })
             .catch(function (err) {
                 console.log(err);
             });
-        return  window.location.href = "/profile.html";
     }
 
 };
