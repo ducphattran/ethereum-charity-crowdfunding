@@ -46,11 +46,28 @@
             <div class="row title">
                 <h3>Create Campaign</h3>
             </div>
-            <div  class="mt-3 mx-auto pt-4">
+            <div class="mt-3 mx-auto pt-4">
 
+                <form action="#" id="create-campaign-form">
                     <div class="form-group">
-                        <label for="campaign-username" class="font-weight-bold">A Campaign will be created with this username</label>
-                        <input type="text" class="form-control" id="campaign-username" required="true" readonly="true" >
+                        <label for="campaign-username" class="font-weight-bold">A Campaign will be created with this
+                            username</label>
+                        <input type="text" class="form-control" id="campaign-username" required="true" readonly="true">
+                    </div>
+                    <div class="form-group">
+                        <label for="name" class="font-weight-bold">Name Of Campaign</label>
+                        <span id="error_name" class="errors" style="color: red"></span>
+                        <input type="text" class="form-control" id="name" required="true" >
+                    </div>
+                    <div class="form-group">
+                        <label for="datePicker" class="font-weight-bold">Date created</label>
+                        <span id="error_datePicker" class="errors" style="color: red"></span>
+                        <input type="date" class="form-control" id="datePicker" required="true" >
+                    </div>
+                    <div class="form-group">
+                        <label for="description" class="font-weight-bold">Description</label>
+                        <span id="error_email" class="errors" style="color: red"></span>
+                        <textarea class="form-control" rows="20" id="description"></textarea>
                     </div>
                     <div class=" d-none loader-log-in mx-auto my-3"></div>
                     <div class=" d-none alert alert-danger my-3" id="error_txt">
@@ -59,6 +76,7 @@
                         <button id="btn-create" type="submit" class="form-control btn btn-primary">
                             Create</button>
                     </div>
+                </form>
             </div>
         </div>
     </div>

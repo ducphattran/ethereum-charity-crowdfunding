@@ -7,38 +7,12 @@ Campaign = {
         if (campUsername) {
             campUsername.value = web3.toAscii(window.App.account.username);
         }
-
-        //
-        const node = new Ipfs({
-            repo: 'ipfs-' + Math.random()
-        })
-        node.once('ready', () => {
-            console.log('Online status: ', node.isOnline() ? 'online' : 'offline')
-            // You can write more code here to use it. Use methods like 
-            // node.files.add, node.files.get. See the API docs here:
-            // https://github.com/ipfs/interface-ipfs-core
-            var obj = {
-                "id" : 3,
-                "name": "ryan"
-            };
-            node.files.add(new node.types.Buffer(JSON.stringify(obj)), (err, filesAdded) => {
-                if (err) {
-                    return console.error('Error - ipfs add', err, res)
-                }
-
-                filesAdded.forEach((file) => console.log('successfully stored', file.hash))
-            })
-
-            node.files.cat('Qmak2PftRvJYyZJkWH5ud9J48RXvD46DUJeH2ovbD95qNm', function (err, data) {
-                if (err) {
-                    return console.error('Error - ipfs files cat', err, res)
-                }
-                var jsondata = data.toString();
-                jsondata = JSON.parse(jsondata);
-                console.log(jsondata)
-            })
-        })
-
+        Date.prototype.toDateInputValue = (function() {
+            var local = new Date(this);
+            local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+            return local.toJSON().slice(0,10);
+        });
+        document.getElementById('datePicker').value = new Date().toDateInputValue();
         return Campaign.initWeb3();
     },
 
@@ -64,7 +38,6 @@ Campaign = {
             // Set the provider for our contract
             Campaign.contracts.Funding.setProvider(Campaign.web3Provider);
 
-            return Campaign.showCampaigns();
         });
 
         return Campaign.bindEvents();
@@ -105,55 +78,6 @@ Campaign = {
             console.log(error.message);
         });
     },
-
-    showCampaigns: function () {
-        var fundingInstance;
-
-        Campaign.contracts.Funding.deployed().then(function (instance) {
-            fundingInstance = instance;
-            return fundingInstance.getCampaignCount.call();
-
-        }).then(function (length) {
-            console.log("length: " + length.toString());
-            return lengthOfCampaigns = length.toString();
-
-        }).then(function () {
-            Campaign.contracts.Funding.deployed().then(function (instance) {
-                fundingInstance = instance;
-                for (var i = 0; i < lengthOfCampaigns; i++) {
-
-                    fundingInstance.getCampaign.call(i).then(function (campaign) {
-                        var row = document.createElement("tr");
-                        var col1 = document.createElement("td");
-                        var col2 = document.createElement("td");
-                        var col3 = document.createElement("td");
-                        var col4 = document.createElement("td");
-                        var col5 = document.createElement("td");
-                        var donateBtn = document.createElement("a");
-                        donateBtn.className = "btn btn-primary text-light";
-                        donateBtn.innerText = "Donate";
-                        donateBtn.href = "/donate.html?id=" + campaign[0].toNumber();
-
-                        col1.appendChild(document.createTextNode(campaign[0].toNumber()));
-                        col2.appendChild(document.createTextNode(campaign[1]));
-                        col3.appendChild(document.createTextNode(campaign[2].toNumber()));
-                        col4.appendChild(document.createTextNode(campaign[3].toNumber()));
-                        col5.appendChild(donateBtn);
-
-                        row.appendChild(col1);
-                        row.appendChild(col2);
-                        row.appendChild(col3);
-                        row.appendChild(col4);
-                        row.appendChild(col5);
-                        document.getElementById("campaigns-tbody").appendChild(row);
-                        console.log(campaign);
-                    });
-
-                }
-            });
-        });
-
-    }
 
 };
 
