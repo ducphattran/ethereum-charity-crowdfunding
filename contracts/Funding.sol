@@ -5,15 +5,17 @@ contract Funding {
     mapping (address => uint) private addressToIndex; // get Index from Address
     mapping (bytes16 => uint) private usernameToIndex; // get Index from Username
     mapping (address => Account) private addressToAccount; // get Account from Address
-    mapping (bytes => uint) private ipfsHashToIndex;
+    mapping (bytes => uint) private ipfsHashToIndex; // get Index from ipfsHash of Account
     mapping (uint => Campaign) private idToCampaign; // get Campaign from id of a campaign
     mapping (uint => transactionLog) private idToTransLog; // get transactionLog from id of transactionLog
+    mapping (bytes => uint) private nameOfCampToIndex; //get Index from name of Campaign
     
-    Account[] private accounts;
+    Account[] public accounts;
     address[] private addresses;
     bytes16[] private usernames;
     bytes[] private ipfsHashes; 
     int256[][] private tokenExchangeLogs;
+    bytes[] private namesOfCamp;
     uint256[][] private campaignsByIndex;
     uint256[][] private transactionsByIdCamp;
     uint256 private numOfCamp;
@@ -21,7 +23,7 @@ contract Funding {
     
     constructor () public {
         Account memory acc = Account("admin","charity","not-available",0);
-        
+    
         accounts.push(acc);
         addresses.push(msg.sender);
         usernames.push("admin");
@@ -30,6 +32,9 @@ contract Funding {
         
         numOfCamp = 0;
         numOfTrans = 0;
+        // create 1st campaign
+        namesOfCamp.push("this campaign is used to waste the 1st index");
+        nameOfCampToIndex["this campaign is used to waste the 1st index"] = namesOfCamp.length -1 ;
     }
     
     struct Account{
@@ -49,21 +54,28 @@ contract Funding {
     
     struct Campaign{
         uint id;
+        bytes name;
         address creator;
         int numOfToken;
         uint numOfTrans;
         bytes ipfsHash;
     }
     
+    
     function getBal() public view returns(uint256 bal){
         return address (this).balance;
     }
     
-    function hadAccount(address userAddress) public view returns (bool flag){
+    function nameOfCampTaken(bytes nameOfCamp) private view returns (bool) {
+        return (keccak256(nameOfCamp) == keccak256("this campaign is used to waste the 1st index") 
+        || nameOfCampToIndex[nameOfCamp] > 0 ); 
+    }
+
+    function hadAccount(address userAddress) private view returns (bool flag){
         return (addressToIndex[userAddress] > 0 || userAddress == addresses[0]);
     }
     
-    function usernameTaken(bytes16 username) public view returns (bool flag){
+    function usernameTaken(bytes16 username) private view returns (bool flag){
         return (usernameToIndex[username] > 0 || username == "admin");
     }
     
@@ -148,13 +160,16 @@ contract Funding {
         return tokenExchangeLogs[usernameToIndex[username]];
     }
     
-    function createCampaign(bytes16 username,bytes campaignIpfsHash) public 
+    function createCampaign(bytes16 username,bytes nameOfCamp,bytes campaignIpfsHash) public 
     returns (bool success){
         require(usernameTaken(username));
-        Campaign memory camp = Campaign(numOfCamp,addresses[usernameToIndex[username]],0,0,campaignIpfsHash);
+        require(!nameOfCampTaken(nameOfCamp));
+        Campaign memory camp = Campaign(numOfCamp,nameOfCamp,addresses[usernameToIndex[username]],0,0,campaignIpfsHash);
         idToCampaign[numOfCamp] = camp;
         campaignsByIndex[usernameToIndex[username]].push(numOfCamp);
         numOfCamp += 1;
+        namesOfCamp.push(nameOfCamp);
+        nameOfCampToIndex[nameOfCamp] = namesOfCamp.length - 1;
         transactionsByIdCamp.push([0]);
         return true;
     }
