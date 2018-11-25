@@ -66,12 +66,12 @@ App = {
                 '<a href="/profile.html" id="btn-sign-out" class="btn btn-info text-light">Log Out' +
                 '</a>' ;
             var nav = document.getElementById("nav");
-            // add campaign nav-link    
+            // add create campaign nav-link    
             var campaignLiTag = document.createElement("li");
             campaignLiTag.className = "nav-item active";
             var campaignATag = document.createElement("a");
             campaignATag.className = "nav-link";
-            campaignATag.href = "/campaign.html";
+            campaignATag.href = "/create-campaign.html";
             campaignATag.innerText = "Create Campaign";
             campaignLiTag.appendChild(campaignATag);
             nav.appendChild(campaignLiTag);

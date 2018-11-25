@@ -46,8 +46,8 @@ Profile = {
         var token = window.App.account.token;
         var ipfsHash = web3.toAscii(window.App.account.ipfsHash);
         // get Information from ipfsHash
-        window.App.catDataFromIpfs(ipfsHash);
-        var infoJson = JSON.parse(localStorage.getItem("dataFromIpfs"));
+        window.App.catDataFromIpfs(ipfsHash,"profileFromIpfs");
+        var infoJson = JSON.parse(localStorage.getItem("profileFromIpfs"));
         // Display 
         document.getElementById("fullname").innerText = infoJson.fullname;
         document.getElementById("email").innerText = infoJson.email;
