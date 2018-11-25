@@ -56,17 +56,10 @@ Campaign = {
         //showLoader()
         document.getElementById("loader").classList.remove("d-none");
 
-
         //save to ipfs
-        var jsonData = {
-            "nameOfCampaign": document.getElementById("name").value,
-            "createdByUsername": document.getElementById("username").value,
-            "dateCreated": document.getElementById("datePicker").value,
-            "description": document.getElementById("description").value,
-        };
-        // add to ipfs
-        window.App.addDataToIpfs(jsonData);
-        var ipfsHash = localStorage.getItem("ipfsHash");
+        Campaign.addToIpfs();
+        var ipfsHash = localStorage.getItem("campaignData");
+        console.log(ipfsHash);
 
         var fundingInstance;
         var account;
@@ -81,12 +74,12 @@ Campaign = {
             fundingInstance = instance;
             // Execute adopt as a transaction by sending account 
             return fundingInstance.createCampaign(window.App.account.username,
-                window.App.hexToBytes(jsonData.nameOfCampaign,"bytes"), 
-                window.App.hexToBytes(ipfsHash,"bytes"), {
-                from: account,
-                gas: 3500000,
-                gasPrice: 100,
-            });
+                window.App.hexToBytes(document.getElementById("name").value, "bytes"),
+                window.App.hexToBytes(ipfsHash, "bytes"), {
+                    from: account,
+                    gas: 3500000,
+                    gasPrice: 100,
+                });
         }).then(function (result) {
             console.log(result);
             document.getElementById("loader").classList.add("d-none");
@@ -102,6 +95,30 @@ Campaign = {
         }).catch(function (error) {
             console.log(error.message);
         });
+
+        return Campaign.addToIpfs();
+    },
+
+    addToIpfs: function () {
+        const node = new Ipfs({
+            repo: 'ipfs-' + Math.random()
+        })
+        node.once('ready', () => {
+            var jsonData = {
+                "nameOfCampaign": document.getElementById("name").value,
+                "createdByUsername": document.getElementById("username").value,
+                "dateCreated": document.getElementById("datePicker").value,
+                "description": document.getElementById("description").value,
+            };
+            // add to ipfs
+            node.files.add(new node.types.Buffer(JSON.stringify(jsonData)),
+                function (error, filesAdded) {
+                    if (error) {
+                        console.log(error);
+                    }
+                    localStorage.setItem("campaignData", filesAdded[0].hash.toString());
+                });
+        })
     },
 
 };
