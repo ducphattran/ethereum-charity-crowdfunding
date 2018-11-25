@@ -42,63 +42,82 @@ Index = {
 
         }).then(function (length) {
             console.log("length: " + length.toString());
+            document.getElementById("numOfCamps").innerText = length;
             return lengthOfCampaigns = length.toString();
 
         }).then(function () {
             Index.contracts.Funding.deployed().then(function (instance) {
                 fundingInstance = instance;
-                for (var i = 0; i < lengthOfCampaigns; i++) {
+                // display all except the 1st campaign in SC
+                for (var i = 1; i < lengthOfCampaigns; i++) {
 
                     fundingInstance.getCampaign.call(i).then(function (campaign) {
                         // SC returns [id, creator's address, numOfToken, numOfTrans, ipfsHash]
-                        var row = document.createElement("tr");
-                        var col1 = document.createElement("td");
-                        var col2 = document.createElement("td");
-                        var col3 = document.createElement("td");
-                        var col4 = document.createElement("td");
-                        var col5 = document.createElement("td");
-                        var col6 = document.createElement("td");
-                        // donate button
-                        var donateBtn = document.createElement("a");
-                        donateBtn.className = "btn btn-primary text-light btnDonate";
-                        donateBtn.innerText = "Donate";
-                        donateBtn.href = "/donate.html?id=" + campaign[0].toNumber();
-                        // Get jsonData from ipfsHash
-                        window.App.catDataFromIpfs(web3.toAscii(campaign[4]), "campaignFromIpfs");
-                        var jsonData = JSON.parse(localStorage.getItem("campaignFromIpfs"));
-                        console.log(jsonData);
-                        // append to col
-                        // id
-                        col1.appendChild(document.createTextNode(campaign[0].toNumber()));
-                        // name of campaign
-                        var nameOfCampaign = document.createElement("a");
-                        nameOfCampaign.href = "/campaign.html?id=" + campaign[0].toNumber();
-                        nameOfCampaign.innerText = jsonData.nameOfCampaign;
-                        col2.appendChild(nameOfCampaign);
-                        // created date
-                        col3.appendChild(document.createTextNode(jsonData.dateCreated));
-                        // tokens - numOfTokens
-                        col4.appendChild(document.createTextNode(campaign[3].toNumber()));
-                        // donations - numOfTrans
-                        col5.appendChild(document.createTextNode(campaign[3].toNumber()));
-                        // donateBtn
-                        col6.appendChild(donateBtn);
-                        // append to row
-                        row.appendChild(col1);
-                        row.appendChild(col2);
-                        row.appendChild(col3);
-                        row.appendChild(col4);
-                        row.appendChild(col5);
-                        row.appendChild(col6);
-                        document.getElementById("campaigns-tbody").appendChild(row);
-                        console.log(campaign);
+                        Index.display(campaign);
                     });
 
                 }
             });
         });
 
-    }
+    },
+    display: function (campaign) {
+        // Get jsonData from ipfsHash
+        const node = new Ipfs({
+            repo: 'ipfs-' + Math.random()
+        })
+        node.once('ready', () => {
+
+            node.files.cat(web3.toAscii(campaign[4]), function (err, data) {
+                if (err) {
+                    return console.error('Error - ipfs files cat', err, res)
+                }
+
+                var row = document.createElement("tr");
+                var col1 = document.createElement("td");
+                var col2 = document.createElement("td");
+                var col3 = document.createElement("td");
+                var col4 = document.createElement("td");
+                var col5 = document.createElement("td");
+                var col6 = document.createElement("td");
+                // donate button
+                var donateBtn = document.createElement("a");
+                donateBtn.className = "btn btn-primary text-light btnDonate";
+                donateBtn.innerText = "Donate";
+                donateBtn.href = "/donate.html?id=" + campaign[0].toNumber();
+                // append to col
+                // id
+                col1.appendChild(document.createTextNode(campaign[0].toNumber()));
+                // tokens - numOfTokens
+                col4.appendChild(document.createTextNode(campaign[3].toNumber()));
+                // donations - numOfTrans
+                col5.appendChild(document.createTextNode(campaign[3].toNumber()));
+                // donateBtn
+                col6.appendChild(donateBtn);
+                // data from ipfs hash
+                var jsonData = JSON.parse(data.toString());
+                console.log(jsonData);
+
+                // name of campaign
+                var nameOfCampaign = document.createElement("a");
+                nameOfCampaign.href = "/campaign-in-details.html?id=" + campaign[0].toNumber();
+                nameOfCampaign.innerText = jsonData.nameOfCampaign;
+                col2.appendChild(nameOfCampaign);
+
+                // created date
+                col3.appendChild(document.createTextNode(jsonData.dateCreated));
+
+                // append to row
+                row.appendChild(col1);
+                row.appendChild(col2);
+                row.appendChild(col3);
+                row.appendChild(col4);
+                row.appendChild(col5);
+                row.appendChild(col6);
+                document.getElementById("campaigns-tbody").appendChild(row);
+            })
+        })
+    },
 
 };
 
