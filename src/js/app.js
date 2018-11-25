@@ -89,19 +89,19 @@ App = {
         }
     },
 
-    addDataToIpfs: function (jsonData) {
+    addDataToIpfs: function (jsonData,str_name = "ipfsHash") {
         const node = new Ipfs({
             repo: 'ipfs-' + Math.random()
         })
         node.once('ready', () => {
             node.files.add(new node.types.Buffer(JSON.stringify(jsonData)), function (error, filesAdded) {
-                localStorage.setItem("ipfsHash", filesAdded[0].hash.toString());
+                localStorage.setItem(str_name, filesAdded[0].hash.toString());
             });
 
         })
     },
 
-    catDataFromIpfs: function (ipfsHash) {
+    catDataFromIpfs: function (ipfsHash,str_name ="dataFromIpfs") {
         const node = new Ipfs({
             repo: 'ipfs-' + Math.random()
         })
@@ -111,7 +111,7 @@ App = {
                     return console.error('Error - ipfs files cat', err, res)
                 }
                 var jsondata = data.toString();
-                localStorage.setItem("dataFromIpfs", jsondata);
+                localStorage.setItem(str_name, jsondata);
             })
         })
     },
