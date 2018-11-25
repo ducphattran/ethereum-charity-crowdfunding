@@ -32,7 +32,7 @@ Index = {
         });
 
     },
-    
+
     showCampaigns: function () {
         var fundingInstance;
 
@@ -64,14 +64,17 @@ Index = {
                         donateBtn.innerText = "Donate";
                         donateBtn.href = "/donate.html?id=" + campaign[0].toNumber();
                         // Get jsonData from ipfsHash
-                        window.App.catDataFromIpfs(web3.toAscii(campaign[4]),"campaignFromIpfs");
+                        window.App.catDataFromIpfs(web3.toAscii(campaign[4]), "campaignFromIpfs");
                         var jsonData = JSON.parse(localStorage.getItem("campaignFromIpfs"));
                         console.log(jsonData);
                         // append to col
                         // id
                         col1.appendChild(document.createTextNode(campaign[0].toNumber()));
                         // name of campaign
-                        col2.appendChild(document.createTextNode(jsonData.nameOfCampaign));
+                        var nameOfCampaign = document.createElement("a");
+                        nameOfCampaign.href = "/campaign.html?id=" + campaign[0].toNumber();
+                        nameOfCampaign.innerText = jsonData.nameOfCampaign;
+                        col2.appendChild(nameOfCampaign);
                         // created date
                         col3.appendChild(document.createTextNode(jsonData.dateCreated));
                         // tokens - numOfTokens
