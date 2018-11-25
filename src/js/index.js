@@ -31,13 +31,7 @@ Index = {
             return Index.showCampaigns();
         });
 
-        // return Index.bindEvents();
     },
-
-    // bindEvents: function () {
-    //     $(document).on('click', '#btn-create', Index.create);
-    // },
-
     
     showCampaigns: function () {
         var fundingInstance;
@@ -56,28 +50,43 @@ Index = {
                 for (var i = 0; i < lengthOfCampaigns; i++) {
 
                     fundingInstance.getCampaign.call(i).then(function (campaign) {
+                        // SC returns [id, creator's address, numOfToken, numOfTrans, ipfsHash]
                         var row = document.createElement("tr");
                         var col1 = document.createElement("td");
                         var col2 = document.createElement("td");
                         var col3 = document.createElement("td");
                         var col4 = document.createElement("td");
                         var col5 = document.createElement("td");
+                        var col6 = document.createElement("td");
+                        // donate button
                         var donateBtn = document.createElement("a");
-                        donateBtn.className = "btn btn-primary text-light";
+                        donateBtn.className = "btn btn-primary text-light btnDonate";
                         donateBtn.innerText = "Donate";
                         donateBtn.href = "/donate.html?id=" + campaign[0].toNumber();
-
+                        // Get jsonData from ipfsHash
+                        window.App.catDataFromIpfs(web3.toAscii(campaign[4]),"campaignFromIpfs");
+                        var jsonData = JSON.parse(localStorage.getItem("campaignFromIpfs"));
+                        console.log(jsonData);
+                        // append to col
+                        // id
                         col1.appendChild(document.createTextNode(campaign[0].toNumber()));
-                        col2.appendChild(document.createTextNode(campaign[1]));
-                        col3.appendChild(document.createTextNode(campaign[2].toNumber()));
+                        // name of campaign
+                        col2.appendChild(document.createTextNode(jsonData.nameOfCampaign));
+                        // created date
+                        col3.appendChild(document.createTextNode(jsonData.dateCreated));
+                        // tokens - numOfTokens
                         col4.appendChild(document.createTextNode(campaign[3].toNumber()));
-                        col5.appendChild(donateBtn);
-
+                        // donations - numOfTrans
+                        col5.appendChild(document.createTextNode(campaign[3].toNumber()));
+                        // donateBtn
+                        col6.appendChild(donateBtn);
+                        // append to row
                         row.appendChild(col1);
                         row.appendChild(col2);
                         row.appendChild(col3);
                         row.appendChild(col4);
                         row.appendChild(col5);
+                        row.appendChild(col6);
                         document.getElementById("campaigns-tbody").appendChild(row);
                         console.log(campaign);
                     });

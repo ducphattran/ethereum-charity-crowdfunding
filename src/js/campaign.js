@@ -66,7 +66,6 @@ Campaign = {
         console.log(jsonData);
         window.App.addDataToIpfs(jsonData);// convert to ipfsHash
         var ipfsHash = localStorage.getItem("ipfsHash");
-        console.log(window.App.hexToBytes(jsonData.nameOfCampaign,"bytes"));
         var fundingInstance;
         var account;
 
