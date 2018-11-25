@@ -39,6 +39,7 @@ Transfer = {
     },
 
     transfer: function(){
+        document.getElementById("loader").classList.remove("d-none");
         var fundingInstance;
         var account;
         var amount = document.getElementById("amount").value;
@@ -58,15 +59,18 @@ Transfer = {
                 gas: 3000000,
                 gasPrice: 100,
                 value: sendingAmount,
-                // value: web3.toWei(amount.toNumber(), "finney" ),
             });
         }).then(function (result) {
             console.log(result);
-
+            document.getElementById("loader").classList.add("d-none");
             if (result.receipt.status === "0x0") {
-                alert("Transaction failed!");
+                var error = document.getElementById("error_txt");
+                error.className = "alert alert-danger my-3";
+                error.innerHTML = "<strong>Failed!</strong> The operation was interupted with errors";
             } else {
-                alert("Transaction succeeded!");
+                var success = document.getElementById("error_txt");
+                success.className = "alert alert-success my-3";
+                success.innerHTML = "<strong>Success!</strong>The campaign is created!";
             }
         }).catch(function (error) {
             console.log(error.message);
