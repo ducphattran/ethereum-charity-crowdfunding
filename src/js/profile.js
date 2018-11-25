@@ -30,7 +30,7 @@ Profile = {
 
             return Profile.getProfile();
         });
-        
+
         return Profile.bindEvents();
     },
 
@@ -40,25 +40,36 @@ Profile = {
     },
 
     getProfile: function () {
-        // get data from App.account
-        var username = web3.toAscii(window.App.account.username);
-        var address = window.App.account.address;
-        var token = window.App.account.token;
-        var ipfsHash = web3.toAscii(window.App.account.ipfsHash);
-        // get Information from ipfsHash
-        window.App.catDataFromIpfs(ipfsHash,"profileFromIpfs");
-        var infoJson = JSON.parse(localStorage.getItem("profileFromIpfs"));
-        // Display 
-        document.getElementById("fullname").innerText = infoJson.fullname;
-        document.getElementById("email").innerText = infoJson.email;
-        document.getElementById("address").innerText = address;
-        document.getElementById("username").innerText = username;
-        document.getElementById("token").innerText = token;
+        const node = new Ipfs({
+            repo: 'ipfs-' + Math.random()
+        })
+        node.once('ready', () => {
+            node.files.cat(web3.toAscii(window.App.account.ipfsHash), function (err, data) {
+                if (err) {
+                    return console.error('Error - ipfs files cat', err, res)
+                }
+                var jsondata = data.toString();
+                console.log(jsondata);
+                localStorage.setItem("profileFromIpfs", jsondata);
+            })
 
+            // get data from App.account
+            var username = web3.toAscii(window.App.account.username);
+            var address = window.App.account.address;
+            var token = window.App.account.token;
+            var infoJson = JSON.parse(localStorage.getItem("profileFromIpfs"));
+            // Display 
+            document.getElementById("fullname").innerText = infoJson.fullname;
+            document.getElementById("email").innerText = infoJson.email;
+            document.getElementById("address").innerText = address;
+            document.getElementById("username").innerText = username;
+            document.getElementById("token").innerText = token;
+
+        })
         return Profile.bindEvents();
     },
 
-    signOut: function(event){
+    signOut: function (event) {
         event.preventDefault();
         sessionStorage.clear();
         return window.location.href = "/log-in.html";
