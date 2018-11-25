@@ -89,33 +89,6 @@ App = {
         }
     },
 
-    addDataToIpfs: function (jsonData,str_name = "ipfsHash") {
-        const node = new Ipfs({
-            repo: 'ipfs-' + Math.random()
-        })
-        node.once('ready', () => {
-            node.files.add(new node.types.Buffer(JSON.stringify(jsonData)), function (error, filesAdded) {
-                localStorage.setItem(str_name, filesAdded[0].hash.toString());
-            });
-
-        })
-    },
-
-    catDataFromIpfs: function (ipfsHash,str_name ="dataFromIpfs") {
-        const node = new Ipfs({
-            repo: 'ipfs-' + Math.random()
-        })
-        node.once('ready', () => {
-            node.files.cat(ipfsHash, function (err, data) {
-                if (err) {
-                    return console.error('Error - ipfs files cat', err, res)
-                }
-                var jsondata = data.toString();
-                localStorage.setItem(str_name, jsondata);
-            })
-        })
-    },
-
 };
 
 $(function () {
