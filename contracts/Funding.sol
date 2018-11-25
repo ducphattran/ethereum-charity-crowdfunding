@@ -55,7 +55,7 @@ contract Funding {
     struct Campaign{
         uint id;
         bytes name;
-        address creator;
+        bytes16 creator;
         int numOfToken;
         uint numOfTrans;
         bytes ipfsHash;
@@ -128,6 +128,10 @@ contract Funding {
         }
     }
     
+    function getAddressByUsername(bytes16 username) public view returns(address){
+        return addresses[usernameToIndex[username]];
+    }
+
     function exchangeToToken() payable minPrice(msg.value) public returns (bool success){
         int256 numOfToken = int256(msg.value/1000000000);
         // get Account
@@ -164,7 +168,7 @@ contract Funding {
     returns (bool success){
         require(usernameTaken(username));
         require(!nameOfCampTaken(nameOfCamp));
-        Campaign memory camp = Campaign(numOfCamp,nameOfCamp,addresses[usernameToIndex[username]],0,0,campaignIpfsHash);
+        Campaign memory camp = Campaign(numOfCamp,nameOfCamp,username,0,0,campaignIpfsHash);
         idToCampaign[numOfCamp] = camp;
         campaignsByIndex[usernameToIndex[username]].push(numOfCamp);
         numOfCamp += 1;
@@ -175,7 +179,7 @@ contract Funding {
     }
     
     function getCampaign (uint256 idCampaign) public 
-    view returns (uint256 id,address creator,int256 numOfToken,uint256 numberOfTrans,bytes ipfsHash){
+    view returns (uint256 id,bytes16 creatorUsername,int256 numOfToken,uint256 numberOfTrans,bytes ipfsHash){
         Campaign memory camp = idToCampaign[idCampaign];
         return (camp.id,camp.creator,camp.numOfToken,camp.numOfTrans,camp.ipfsHash);
     }
