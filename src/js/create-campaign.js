@@ -15,6 +15,7 @@ Campaign = {
             return local.toJSON().slice(0, 10);
         });
         document.getElementById('datePicker').value = new Date().toDateInputValue();
+
         return Campaign.initWeb3();
     },
 
@@ -63,9 +64,10 @@ Campaign = {
             "dateCreated": document.getElementById("datePicker").value,
             "description": document.getElementById("description").value,
         };
-        console.log(jsonData);
-        window.App.addDataToIpfs(jsonData);// convert to ipfsHash
+        // add to ipfs
+        window.App.addDataToIpfs(jsonData);
         var ipfsHash = localStorage.getItem("ipfsHash");
+
         var fundingInstance;
         var account;
 
@@ -79,7 +81,7 @@ Campaign = {
             fundingInstance = instance;
             // Execute adopt as a transaction by sending account 
             return fundingInstance.createCampaign(window.App.account.username,
-                window.App.hexToBytes(jsonData.nameOfCampaign,"bytes"),
+                window.App.hexToBytes(jsonData.nameOfCampaign,"bytes"), 
                 window.App.hexToBytes(ipfsHash,"bytes"), {
                 from: account,
                 gas: 3500000,

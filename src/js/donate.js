@@ -3,6 +3,7 @@ Donate = {
     contracts: {},
     init: function () {
         var idCampaign = window.location.href.split("?id=")[1];
+        localStorage.setItem("idCampaignToDonate",idCampaign);
         document.getElementById("id-campaign").value = idCampaign;
         return Donate.initWeb3();
     },
@@ -43,7 +44,7 @@ Donate = {
         var fundingInstance;
         var account;
         var tokens = document.getElementById("amount").value;
-        var idCampaign = window.location.href.split("?id=")[1];
+        var idCampaign = localStorage.getItem("idCampaignToDonate");
         
         web3.eth.getAccounts(function (error, accounts) {
             if (error) {
@@ -51,11 +52,15 @@ Donate = {
             }
             account = accounts[0];
         });
-        App.contracts.Funding.deployed().then(function (instance) {
+        Donate.contracts.Funding.deployed().then(function (instance) {
             fundingInstance = instance;
-            // Execute adopt as a transaction by sending account web3.padRight(web3.fromAscii("123"), 34)
+            // Execute adopt as a transaction by sending account 
             return fundingInstance.donate(
-                tokens, idCampaign,window.App.account.username, window.App.account.password,
+                tokens, 
+                idCampaign,
+                window.App.account.username, 
+                window.App.account.password,
+                
                 {
                 from: account,
                 gas: 3000000,
@@ -63,11 +68,15 @@ Donate = {
             });
         }).then(function (result) {
             console.log(result);
-
+            document.getElementById("loader").classList.add("d-none");
             if (result.receipt.status === "0x0") {
-                alert("Transaction failed!");
+                var error = document.getElementById("error_txt");
+                error.className = "alert alert-danger my-3";
+                error.innerHTML = "<strong>Failed!</strong> The operation was interupted with errors";
             } else {
-                alert("Transaction succeeded!");
+                var success = document.getElementById("error_txt");
+                success.className = "alert alert-success my-3";
+                success.innerHTML = "<strong>Success!</strong>The campaign is created!";
             }
         }).catch(function (error) {
             console.log(error.message);
