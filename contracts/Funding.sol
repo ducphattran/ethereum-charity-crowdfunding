@@ -183,6 +183,16 @@ contract Funding {
         Campaign memory camp = idToCampaign[idCampaign];
         return (camp.id,camp.creator,camp.numOfToken,camp.numOfTrans,camp.ipfsHash);
     }
+    
+    function getTransactionListOfCamp(uint256 idCampaign) public view returns (uint256[] ids){
+        return transactionsByIdCamp[idCampaign];
+    }
+        
+    function getTransactionById(uint256 idTransaction) public
+    view returns(uint256 id,uint256 fromIndexAcc,uint toIdCamp,uint numOfToken,bytes ipfsHash){
+        transactionLog memory trans = idToTransLog[idTransaction];
+        return (trans.id,trans.fromIndexAcc,trans.toIdCamp,trans.numOfToken,trans.ipfsHash);
+    }
  
     function donate(uint256 tokens,uint256 idCampaign,bytes16 username,bytes password,bytes transIpfsHash) public returns (bool success){
         require(checkAuth(username,password));
@@ -198,7 +208,11 @@ contract Funding {
         
         transactionLog memory trans = transactionLog(numOfTrans,usernameToIndex[username]
         ,idCampaign,tokens,transIpfsHash);
+        if(camp.numOfTrans-1 == 0){
+            transactionsByIdCamp[idCampaign].push(0);
+        }else{
         transactionsByIdCamp[idCampaign].push(numOfTrans);
+        }
         idToTransLog[numOfTrans] = trans;
         numOfTrans += 1;
         return true;
