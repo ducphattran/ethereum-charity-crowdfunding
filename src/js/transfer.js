@@ -38,7 +38,8 @@ Transfer = {
         $(document).on('click', '#btn-transfer', Transfer.transfer);
     },
 
-    transfer: function(){
+    transfer: function(event){
+        event.preventDefault();
         document.getElementById("loader").classList.remove("d-none");
         var fundingInstance;
         var account;
@@ -70,7 +71,7 @@ Transfer = {
             } else {
                 var success = document.getElementById("error_txt");
                 success.className = "alert alert-success my-3";
-                success.innerHTML = "<strong>Success!</strong>The campaign is created!";
+                success.innerHTML = "<strong>Success!</strong>Token was exchanged to your account!";
             }
         }).catch(function (error) {
             console.log(error.message);
