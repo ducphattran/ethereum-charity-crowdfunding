@@ -104,7 +104,7 @@ Index = {
 
                 // name of campaign
                 var nameOfCampaign = document.createElement("a");
-                nameOfCampaign.href = "/campaign-in-details.html?id=" + campaign[0].toNumber();
+                nameOfCampaign.href = "/campaign.html?id=" + campaign[0].toNumber();
                 nameOfCampaign.innerText = jsonData.nameOfCampaign;
                 col2.appendChild(nameOfCampaign);
 

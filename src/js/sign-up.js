@@ -71,6 +71,7 @@ SignUp = {
     },
 
     createAccount: function (event) {
+        event.preventDefault();
         //get input
         var inputFullname = document.getElementById("fullname").value;
         var inputEmail = document.getElementById("email").value;
@@ -85,21 +86,22 @@ SignUp = {
 
             signUpForm.remove();
 
+            //add to ipfs
+            var jsonData = {
+                "username": inputUsername,
+                "fullname": inputFullname,
+                "email": inputEmail,
+            };
+            SignUp.addToIpfs(jsonData);
             //showLoader()
             var loader = document.createElement("div");
 
             loader.className = "loader-sign-up mx-auto mt-5";
             signUpSection.appendChild(loader);
 
-            //save to ipfs
-            var jsonData = {
-                "username": inputUsername,
-                "fullname": inputFullname,
-                "email": inputEmail,
-            };
-            window.App.addDataToIpfs(jsonData);
-            var ipfsHash = localStorage.getItem("ipfsHash");
-
+            // ipfsHash
+            var ipfsHash = localStorage.getItem("signUpipfsHash");
+            console.log(ipfsHash);
             var fundingInstance;
             var account;
             // Get account
@@ -141,6 +143,25 @@ SignUp = {
                 });
 
         }
+    },
+
+    addToIpfs: function (jsonData) {
+        const node = new Ipfs({
+            repo: 'ipfs-' + Math.random()
+        })
+        node.once('ready', () => {
+            console.log('Online status: ', node.isOnline() ? 'online' : 'offline')
+            //save to ipfs
+            node.files.add(new node.types.Buffer(JSON.stringify(jsonData)),
+                function (error, filesAdded) {
+                    if (error) {
+                        console.log(error);
+                    }
+                    localStorage.setItem("signUpipfsHash", filesAdded[0].hash.toString());
+                });
+
+        })
+        // return SignUp.Call
     },
 
     validateForm: function (username, password, confirmPassword) {
