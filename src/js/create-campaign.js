@@ -73,7 +73,8 @@ Campaign = {
         Campaign.contracts.Funding.deployed().then(function (instance) {
             fundingInstance = instance;
             // Execute adopt as a transaction by sending account 
-            return fundingInstance.createCampaign(window.App.account.username,
+            return fundingInstance.createCampaign(
+                window.App.account.username,
                 window.App.hexToBytes(document.getElementById("name").value, "bytes"),
                 window.App.hexToBytes(ipfsHash, "bytes"), {
                     from: account,
@@ -104,10 +105,12 @@ Campaign = {
             repo: 'ipfs-' + Math.random()
         })
         node.once('ready', () => {
+
+            console.log('Online status: ', node.isOnline() ? 'online' : 'offline')
             var jsonData = {
                 "nameOfCampaign": document.getElementById("name").value,
                 "createdByUsername": document.getElementById("username").value,
-                "dateCreated": document.getElementById("datePicker").value,
+                "createdDate": document.getElementById("datePicker").value,
                 "description": document.getElementById("description").value,
             };
             // add to ipfs

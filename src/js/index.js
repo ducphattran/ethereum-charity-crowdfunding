@@ -49,11 +49,13 @@ Index = {
             Index.contracts.Funding.deployed().then(function (instance) {
                 fundingInstance = instance;
                 // display all except the 1st campaign in SC
-                for (var i = 1; i < lengthOfCampaigns; i++) {
+                for (var i = 0; i < lengthOfCampaigns; i++) {
 
                     fundingInstance.getCampaign.call(i).then(function (campaign) {
                         // SC returns [id, creator's address, numOfToken, numOfTrans, ipfsHash]
                         Index.display(campaign);
+                        // IpfsObj.cat(web3.toAscii(campaign[4]), "campaignList");
+                        // console.log(localStorage.getItem("campaignList"));
                     });
 
                 }
@@ -62,17 +64,19 @@ Index = {
 
     },
     display: function (campaign) {
+        console.log(campaign);
         // Get jsonData from ipfsHash
         const node = new Ipfs({
             repo: 'ipfs-' + Math.random()
         })
         node.once('ready', () => {
 
+            console.log('Online status: ', node.isOnline() ? 'online' : 'offline')
             node.files.cat(web3.toAscii(campaign[4]), function (err, data) {
                 if (err) {
-                    return console.error('Error - ipfs files cat', err, res)
+                    console.error('Error - ipfs files cat', err, res)
                 }
-
+                localStorage.setItem("campaignList", data.toString());
                 var row = document.createElement("tr");
                 var col1 = document.createElement("td");
                 var col2 = document.createElement("td");
@@ -105,7 +109,7 @@ Index = {
                 col2.appendChild(nameOfCampaign);
 
                 // created date
-                col3.appendChild(document.createTextNode(jsonData.dateCreated));
+                col3.appendChild(document.createTextNode(jsonData.createdDate));
 
                 // append to row
                 row.appendChild(col1);
@@ -114,7 +118,7 @@ Index = {
                 row.appendChild(col4);
                 row.appendChild(col5);
                 row.appendChild(col6);
-                document.getElementById("campaigns-tbody").appendChild(row);
+                return document.getElementById("campaigns-tbody").appendChild(row);
             })
         })
     },
