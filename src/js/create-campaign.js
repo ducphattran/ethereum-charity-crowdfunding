@@ -3,10 +3,6 @@ Campaign = {
     contracts: {},
 
     init: function () {
-        var campUsername = document.getElementById("username");
-        if (campUsername) {
-            campUsername.value = web3.toAscii(window.App.account.username);
-        }
         // Set datePicker to today
         // MM-DD-YYYY
         Date.prototype.toDateInputValue = (function () {
@@ -55,61 +51,14 @@ Campaign = {
 
         //showLoader()
         document.getElementById("loader").classList.remove("d-none");
+        const node = new Ipfs();
 
-        //save to ipfs
-        Campaign.addToIpfs();
-        var ipfsHash = localStorage.getItem("campaignData");
-        console.log(ipfsHash);
-
-        var fundingInstance;
-        var account;
-
-        web3.eth.getAccounts(function (error, accounts) {
-            if (error) {
-                console.log(error);
-            }
-            account = accounts[0];
-        });
-        Campaign.contracts.Funding.deployed().then(function (instance) {
-            fundingInstance = instance;
-            // Execute adopt as a transaction by sending account 
-            return fundingInstance.createCampaign(
-                window.App.account.username,
-                window.App.hexToBytes(document.getElementById("name").value, "bytes"),
-                window.App.hexToBytes(ipfsHash, "bytes"), {
-                    from: account,
-                    gas: 3500000,
-                    gasPrice: 100,
-                });
-        }).then(function (result) {
-            console.log(result);
-            document.getElementById("loader").classList.add("d-none");
-            if (result.receipt.status === "0x0") {
-                var error = document.getElementById("error_txt");
-                error.className = "alert alert-danger my-3";
-                error.innerHTML = "<strong>Failed!</strong> The operation was interupted with errors";
-            } else {
-                var success = document.getElementById("error_txt");
-                success.className = "alert alert-success my-3";
-                success.innerHTML = "<strong>Success!</strong>The campaign is created!";
-            }
-        }).catch(function (error) {
-            console.log(error.message);
-        });
-
-        return Campaign.addToIpfs();
-    },
-
-    addToIpfs: function () {
-        const node = new Ipfs({
-            repo: 'ipfs-' + Math.random()
-        })
         node.once('ready', () => {
 
             console.log('Online status: ', node.isOnline() ? 'online' : 'offline')
             var jsonData = {
                 "nameOfCampaign": document.getElementById("name").value,
-                "createdByUsername": document.getElementById("username").value,
+                "createdByUsername": web3.toAscii(window.App.account.username),
                 "createdDate": document.getElementById("datePicker").value,
                 "description": document.getElementById("description").value,
             };
@@ -120,10 +69,49 @@ Campaign = {
                         console.log(error);
                     }
                     localStorage.setItem("campaignData", filesAdded[0].hash.toString());
+
+                    var ipfsHash = localStorage.getItem("campaignData");
+                    console.log(ipfsHash);
+
+                    var fundingInstance;
+                    var account;
+
+                    web3.eth.getAccounts(function (error, accounts) {
+                        if (error) {
+                            console.log(error);
+                        }
+                        account = accounts[0];
+                    });
+                    Campaign.contracts.Funding.deployed().then(function (instance) {
+                        fundingInstance = instance;
+                        // Execute adopt as a transaction by sending account 
+                        return fundingInstance.createCampaign(
+                            window.App.account.username,
+                            window.App.hexToBytes(document.getElementById("name").value, "bytes"),
+                            window.App.hexToBytes(ipfsHash, "bytes"), {
+                                from: account,
+                                gas: 5500000,
+                                gasPrice: 1000000000,
+                            });
+                    }).then(function (result) {
+                        console.log(result);
+                        document.getElementById("loader").classList.add("d-none");
+                        if (result.receipt.status === "0x0") {
+                            var error = document.getElementById("error_txt");
+                            error.className = "alert alert-danger my-3";
+                            error.innerHTML = "<strong>Failed!</strong> The operation was interupted with errors";
+                        } else {
+                            var success = document.getElementById("error_txt");
+                            success.className = "alert alert-success my-3";
+                            success.innerHTML = "<strong>Success!</strong>The campaign is created!";
+                        }
+                    }).catch(function (error) {
+                        console.log(error.message);
+                    });
+
                 });
         })
     },
-
 };
 
 $(function () {

@@ -54,38 +54,21 @@ App = {
     },
 
     bindSession: function () {
+        var headerLink = document.getElementById("header-links");
         if (App.account.username !== null && App.account.password !== null) {
             // Add welcome
-            document.getElementById("welcome-user").innerHTML =
-                '<li class="nav-item mr-2">' +
-                '<a href="/profile.html" id="btn-profile" class="btn btn-info text-light">Welcome, ' +
-                web3.toAscii(App.account.username) +
-                '</a>' +
-                '</li>' +
-                '<li class="nav-item mr-2">' +
-                '<a href="/profile.html" id="btn-sign-out" class="btn btn-info text-light">Log Out' +
-                '</a>' ;
-            var nav = document.getElementById("nav");
-            // add create campaign nav-link    
-            var campaignLiTag = document.createElement("li");
-            campaignLiTag.className = "nav-item active";
-            var campaignATag = document.createElement("a");
-            campaignATag.className = "nav-link";
-            campaignATag.href = "/create-campaign.html";
-            campaignATag.innerText = "Create Campaign";
-            campaignLiTag.appendChild(campaignATag);
-            nav.appendChild(campaignLiTag);
-            // add transfer nav-link    
-            var transferLiTag = document.createElement("li");
-            transferLiTag.className = "nav-item active";
-            var transferATag = document.createElement("a");
-            transferATag.className = "nav-link";
-            transferATag.href = "/transfer.html";
-            transferATag.innerText = "Exchange Token";
-            transferLiTag.appendChild(transferATag);
-            nav.appendChild(transferLiTag);
-        }else{
-            
+            headerLink.children[0].innerHTML =
+                '<li class="has-submenu"><a href="profile.html" >Chào,' + ' ' +
+                web3.toAscii(App.account.username)  + ' <i class="fas fa-angle-down"></i></a>' +
+                '<ul class="submenu">' +
+                '<li><a href="profile.html">Thông tin tài khoản</a></li>' +
+                '<li><a href="create-campaign.html">Tạo chiến dịch</a></li>' +
+                '</ul>' +
+                '</li>'+
+                '<li ><a id="logout-btn" href="#" >Đăng xuất</a></li>';
+        } else {headerLink.children[0].innerHTML =
+            '<li ><a href="sign-up.html" >Đăng ký</a></li>' +
+            '<li ><a href="log-in.html" >Đăng nhập</a></li>';
         }
     },
 
@@ -94,5 +77,11 @@ App = {
 $(function () {
     $(window).load(function () {
         App.init();
+
+        $("#logout-btn").click(function(){
+        event.preventDefault();
+        sessionStorage.clear();
+        return window.location.href = "/index.html";
+        });
     });
 });
