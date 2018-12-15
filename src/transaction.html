@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Charity Funding</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- style.css -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <ul id="nav" class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Home</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav ml-auto" id="welcome-user">
+            <li class="nav-item mr-2">
+                <a href="/sign-up.html" class="btn btn-info text-light">Sign Up</a>
+            </li>
+            <li class="nav-item">
+                <a href="/log-in.html" class="btn btn-info text-light">Log In</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 mt-3">
+                <h1 class="text-center">Gây quỹ từ thiện</h1>
+                <hr />
+                <br />
+            </div>
+        </div>
+        <!-- campaign -->
+        <div class="col-md-12 mt-2">
+            <div class="row title">
+                <h3>Campaign in details</h3>
+            </div>
+            <div class="mt-3 mx-auto pt-4">
+
+                <form action="#" id="create-campaign-form">
+                    <div class="form-group">
+                        <label for="idCampaign" class="font-weight-bold">Id Campaign</label>
+                        <input type="text" class="form-control" id="idCampaign" required="true" readonly="true">
+                    </div>
+                    <div class="form-group">
+                        <label for="username" class="font-weight-bold">Creator's username</label>
+                        <input type="text" class="form-control" id="username" required="true" readonly="true">
+                    </div>
+                    <div class="form-group">
+                        <label for="datePicker" class="font-weight-bold">Created date</label>
+                        <input type="date" class="form-control" id="datePicker" readonly="true">
+                    </div>
+                    <div class="form-group">
+                        <label for="name" class="font-weight-bold">Name Of Campaign</label>
+                        <span id="error_name" class="errors" style="color: red"></span>
+                        <input type="text" class="form-control" id="name" required="true" value="Supporting residents in Nha Trang after the flood"
+                            readonly="true">
+                    </div>
+                    <div class="form-group">
+                        <label for="description" class="font-weight-bold">Description</label>
+                        <span id="error_description" class="errors" style="color: red"></span>
+                        <textarea class="form-control" rows="10" id="description" required="true" readonly="true">This campaign this mainly supporting resident in Nha Trang after the big flood. We welcome your contribution. Thank you!
+                        </textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="numOfTokens" class="font-weight-bold">Tokens</label>
+                        <input type="number" class="form-control" id="numOfTokens" required="true"
+                            readonly="true">
+                    </div>
+            </div>
+            </form>
+        </div>
+        <!-- transactions -->
+        <div class="col-md-12 mt-2">
+            <div class="row title">
+                <h3>Transaction List<span id="numOfTrans" class="badge badge-light ml-3">0</span></h3>
+            </div>
+            <div class="tab-content row">
+                <table class="table table-dark">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>From account</th>
+                            <th>Number of tokens</th>
+                            <th>On date</th>
+                            <th>Message</th>
+                        </tr>
+                    </thead>
+                    <tbody id="campaigns-tbody">
+                        <!-- content show here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/web3.min.js"></script>
+    <script src="js/truffle-contract.js"></script>
+    <script src="https://unpkg.com/ipfs/dist/index.min.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/transaction.js"></script>
+</body>
+
+</html>

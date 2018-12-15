@@ -17,66 +17,62 @@
 
 <body>
 
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-        <ul id="nav" class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="/">Home</a>
-            </li>
-        </ul>
-        <ul class="navbar-nav ml-auto" id="welcome-user">
-            <li class="nav-item mr-2">
-                <a href="/sign-up.html" class="btn btn-info text-light">Sign Up</a>
-            </li>
-            <li class="nav-item">
-                <a href="/log-in.html" class="btn btn-info text-light">Log In</a>
-            </li>
-        </ul>
-    </nav>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12 mt-3">
-                <h1 class="text-center">Gây quỹ từ thiện</h1>
-                <hr />
-                <br />
+
+    <!-- top header -->
+    <div class="row top-header">
+        <!-- left -->
+        <div class="col-md-3 top-left-header">
+            <div class="left-header-links">
+                <ul>
+                    <li><a href="index.html">Trang chủ</a></li>
+                </ul>
             </div>
         </div>
+        <!-- right -->
+        <div class="col-md-9 top-right-header">
+            <div id="header-links" class="right-header-links">
+                <ul>
+                    <li><a href="sign-up.html">Đăng ký</a></li>
+                    <li><a href="log-in.html">Đăng nhập</a></li>
+                </ul>
+            </div>
+        </div>
+    </div> <!-- end top header -->
+
+    <!-- title -->
+    <div class="row">
+        <div class="col-md-12 mt-3">
+            <h1 class="text-center">Tạo chiến dịch gây quỹ</h1>
+            <hr />
+            <br />
+        </div>
+    </div><!-- end title -->
+
+
+    <div class="container">
         <!-- campaign -->
         <div class="col-md-12 mt-2">
-            <div class="row title">
-                <h3>Create Campaign</h3>
-            </div>
-            <div class="mt-3 mx-auto pt-4">
+            <div class=" mx-auto">
 
                 <form action="#" id="create-campaign-form">
+                    <input type="date" class="form-control" id="datePicker" hidden="true" readonly="true">
                     <div class="form-group">
-                        <label for="username" class="font-weight-bold">A Campaign will be created with this
-                            username</label>
-                        <input type="text" class="form-control" id="username" required="true" readonly="true">
-                    </div>
-                    <div class="form-group">
-                        <label for="datePicker" class="font-weight-bold">Date created</label>
-                        <input type="date" class="form-control" id="datePicker"  readonly="true">
-                    </div>
-                    <div class="form-group">
-                        <label for="name" class="font-weight-bold">Name Of Campaign</label>
+                        <label for="name" class="font-weight-bold">Tên chiến dịch</label>
                         <span id="error_name" class="errors" style="color: red"></span>
-                        <input type="text" class="form-control" id="name" required="true"
-                                value= "Supporting residents in Nha Trang after the flood" >
+                        <input type="text" class="form-control" id="name" required="true" value="Ủng hộ trẻ em mồ côi ở mái ấm Thiện Tâm">
                     </div>
                     <div class="form-group">
-                        <label for="description" class="font-weight-bold">Description</label>
+                        <label for="description" class="font-weight-bold">Mô tả</label>
                         <span id="error_description" class="errors" style="color: red"></span>
-                        <textarea class="form-control" rows="20" id="description" required="true"
-                        >This campaign this mainly supporting resident in Nha Trang after the big flood. We welcome your contribution. Thank you!
-                        </textarea>
+                        <textarea class="form-control" rows="10" id="description" required="true">Chiến dịch gây quỹ cho người dân phải gánh chịu lũ lụt ở miên Trung Việt Nam. Mọi đóng góp của các bạn đều được chúng tôi trân quý. Hãy chung tay giúp đỡ các số phận đang gặp phải nhiều khó khăn!</textarea>
                     </div>
                     <div class="d-none loader-log-in mx-auto my-3" id="loader"></div>
                     <div class="d-none alert alert-danger my-3" id="error_txt">
                     </div>
                     <div class="form-group">
                         <button id="btn-create" type="submit" class="form-control btn btn-primary">
-                            Create</button>
+                            Tạo</button>
                     </div>
                 </form>
             </div>
@@ -90,7 +86,6 @@
     <script src="js/web3.min.js"></script>
     <script src="js/truffle-contract.js"></script>
     <script src="https://unpkg.com/ipfs/dist/index.min.js"></script>
-    <script src="js/ipfs.js"></script>
     <script src="js/app.js"></script>
     <script src="js/create-campaign.js"></script>
 </body>

@@ -17,58 +17,65 @@
 
 <body>
 
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="/">Home</a>
-            </li>
-        </ul>
-        <ul class="navbar-nav ml-auto" id="welcome-user">
-            <li class="nav-item mr-2">
-                <a href="/sign-up.html" class="btn btn-info text-light">Sign Up</a>
-            </li>
-            <li class="nav-item">
-                <a href="/log-in.html" class="btn btn-info text-light">Log In</a>
-            </li>
-        </ul>
-    </nav>
+
+    <!-- top header -->
+    <div class="row top-header">
+            <!-- left -->
+            <div class="col-md-3 top-left-header">
+                <div class="left-header-links">
+                    <ul>
+                        <li><a href="index.html">Trang chủ</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- right -->
+            <div class="col-md-9 top-right-header">
+                <div id="header-links" class="right-header-links">
+                    <ul>
+                        <li><a href="sign-up.html">Đăng ký</a></li>
+                        <li><a href="log-in.html">Đăng nhập</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div> <!-- end top header -->
+
+    <!-- title -->
+    <div class="row">
+        <div class="col-md-12 mt-3">
+            <h1 class="text-center">Đăng nhập</h1>
+            <hr />
+            <br />
+        </div>
+    </div><!-- end title -->
 
     <div class="container">
-        <div class="row">
-            <div class="col-md-12 mt-3">
-                <h1 class="text-center">Gây quỹ từ thiện</h1>
-                <hr />
-                <br />
-            </div>
-        </div>
 
         <!-- log-in-->
-        <div class="col-md-12 mt-2">
-            <div class="row title">
-                <h3>Log In</h3>
-            </div>
-            <div id="log-in-section" class="mt-3 mx-auto pt-4">
+        <div class="row register-form-container">
+            <div class="col-md-12">
+                <div id="log-in-section" class="account_form register ">
+                    <form action="#" id="log-in-form">
+                        <div class="form-group">
+                            <label for="username" class="font-weight-bold">Tên đăng nhập:</label>
+                            <input type="text" class="form-control" id="username" required="true" value="ryan">
+                        </div>
 
-                <form action="#" id="log-in-form">
-                    <div class="form-group">
-                        <label for="username" class="font-weight-bold">Username:</label>
-                        <input type="text" class="form-control" id="username" required="true" value="ryan">
-                    </div>
-                    <div class="form-group">
-                        <label for="pwd" class="font-weight-bold">Password:</label>
-                        <input type="password" class="form-control" id="pwd" required="required" value="123">
-                    </div>
-                    <div class=" d-none loader-log-in mx-auto my-3"></div>
-                    <div class=" d-none alert alert-danger my-3" id="error_txt">
-                        
-                    </div>
-                    <div class="form-group">
-                        <button id="btn-log-in" type="submit" class="form-control btn btn-primary">
-                            Log In</button>
-                    </div>
-                </form>
+                        <div class="form-group">
+                            <label for="pwd" class="font-weight-bold">Mật khẩu:</label>
+                            <input type="password" class="form-control" id="pwd" required="required" value="123">
+                        </div>
+                        <div class=" d-none loader-log-in mx-auto my-3"></div>
+                        <div class=" d-none alert alert-danger my-3" id="error_txt"></div>
+                            <div class="form-group">
+                                <button id="btn-log-in" type="submit" class="form-control btn btn-primary">
+                                    Đăng nhập</button>
+                            </div>
+                    </form>
+                </div>
             </div>
         </div>
+    </div>
+
     </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

@@ -11,75 +11,88 @@
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
+    <!-- all.css -->
+    <link rel="stylesheet" href="css/all.css">
     <!-- style.css -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="/">Home</a>
-            </li>
-        </ul>
-        <ul class="navbar-nav ml-auto" id="welcome-user">
-            <li class="nav-item mr-2">
-                <a href="/sign-up.html" class="btn btn-info text-light">Sign Up</a>
-            </li>
-            <li class="nav-item">
-                <a href="/log-in.html" class="btn btn-info text-light">Log In</a>
-            </li>
-        </ul>
-    </nav>
-
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12 mt-3">
-                <h1 class="text-center">Gây quỹ từ thiện</h1>
-                <hr />
-                <br />
+    <!-- top header -->
+    <div class="row top-header">
+        <!-- left -->
+        <div class="col-md-3 top-left-header">
+            <div class="left-header-links">
+                <ul>
+                    <li><a href="index.html">Trang chủ</a></li>
+                </ul>
             </div>
         </div>
-
-        <!-- sign up -->
-        <div class="col-md-12 mt-2">
-            <div class="row title">
-                <h3>Sign up Form</h3>
+        <!-- right -->
+        <div class="col-md-9 top-right-header">
+            <div id="header-links" class="right-header-links">
+                <ul>
+                    <li><a href="sign-up.html">Đăng ký</a></li>
+                    <li><a href="log-in.html">Đăng nhập</a></li>
+                </ul>
             </div>
-            <div id="sign-up-section" class="mt-3 mx-auto pt-4">
+        </div>
+    </div> <!-- end top header -->
 
-                <form action="#" id="sign-up-form">
-                    <div class="form-group">
-                        <label for="fullname" class="font-weight-bold">Fullname:</label>
-                        <span id="error_fullname" class="errors" style="color: red"></span>
-                        <input type="text" class="form-control" id="fullname" required="true" value="Ryan">
-                    </div>
-                    <div class="form-group">
-                        <label for="email" class="font-weight-bold">Username:</label>
-                        <span id="error_email" class="errors" style="color: red"></span>
-                        <input type="email" class="form-control" id="email" required="true" value="ryan@gmail.com">
-                    </div>
-                    <div class="form-group">
-                        <label for="username" class="font-weight-bold">Username:</label>
-                        <span id="error_username" class="errors" style="color: red"></span>
-                        <input type="text" class="form-control" id="username" required="true" value="ryan">
-                    </div>
-                    <div class="form-group">
-                        <label for="pwd" class="font-weight-bold">Password:</label>
-                        <span id="error_password" class="errors" style="color: red"></span>
-                        <input type="password" class="form-control" id="pwd" required="required" value="123">
-                    </div>
-                    <div class="form-group">
-                        <label for="confirm-pwd" class="font-weight-bold">Confirm Password:</label>
-                        <span id="error_confirm_password" class="errors" style="color: red"></span>
-                        <input type="password" class="form-control" id="confirm-pwd" required="required" value="123">
-                    </div>
-                    <div class="form-group">
-                        <button id="btn-sign-up" type="submit" class="form-control btn btn-primary btn-sign-up">
-                            Sign Up</button>
-                    </div>
-                </form>
+    <!-- title -->
+    <div class="row">
+        <div class="col-md-12 mt-3">
+            <h1 class="text-center">Đăng ký</h1>
+            <hr />
+            <br />
+        </div>
+    </div><!-- end title -->
+
+    <div class="container">
+
+        <div class="row register-form-container">
+            <div class="col-md-12">
+                <div id="sign-up-section" class="account_form register ">
+                    <form action="#" id="sign-up-form">
+                            <div class="form-group">
+                                    <label>Tên đăng nhập <span>*</span></label>
+                                <input type="text" id="username" value="ryan">
+                                <p id="error_username"></p>
+                            </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-user-alt    "></i>Họ và tên</label>
+                            <input type="text" id="fullname" value="Ryan Chan">
+                        </div>
+
+                        <div class="form-group">
+                                <label><i class="fas fa-phone"></i> Số điện thoại </label>
+                            <input type="text" id="phone" value="0123123123">
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fas fa-envelope    "></i> Email </label>
+                            <input type="text" id="email" value="ryanchan@gmail.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fas fa-key    "></i> Mật khẩu <span>*</span></label>
+                            <input type="password" id="pwd" value="123">
+                            <p id="error_password"></p>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-key    "></i>Nhập lại mật khẩu <span>*</span></label>
+                            <input type="password" id="confirm-pwd" value="123">
+                            <p id="error_confirm_password"></p>
+                        </div>
+                        <div class=" d-none loader-log-in mx-auto my-3"></div>
+                        <div class=" d-none alert alert-danger my-3" id="error_txt"></div>
+                        <div class="form-group">
+                            <button id="btn-sign-up" type="submit" class="form-control btn btn-primary">
+                                Đăng ký</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

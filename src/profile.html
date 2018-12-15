@@ -11,72 +11,290 @@
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
+    <!-- all.css -->
+    <link rel="stylesheet" href="css/all.css">
+
     <!-- style.css -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-        <ul id="nav" class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="/">Home</a>
-            </li>
-        </ul>
-        <ul class="navbar-nav ml-auto" id="welcome-user">
-            <li class="nav-item mr-2">
-                <a href="/sign-up.html" class="btn btn-info text-light">Sign Up</a>
-            </li>
-            <li class="nav-item">
-                <a href="/log-in.html" class="btn btn-info text-light">Log In</a>
-            </li>
-        </ul>
-    </nav>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12 mt-3">
-                <h1 class="text-center">Gây quỹ từ thiện</h1>
-                <hr />
-                <br />
+    <!-- top header -->
+    <div class="row top-header">
+        <!-- left -->
+        <div class="col-md-3 top-left-header">
+            <div class="left-header-links">
+                <ul>
+                    <li><a href="index.html">Trang chủ</a></li>
+                </ul>
             </div>
         </div>
-
-        <!-- profile -->
-        <div class="col-md-12 mt-2">
-            <div class="row title">
-                <h3>Profile</h3>
+        <!-- right -->
+        <div class="col-md-9 top-right-header">
+            <div id="header-links" class="right-header-links">
+                <ul>
+                    <li><a href="sign-up.html">Đăng ký</a></li>
+                    <li><a href="log-in.html">Đăng nhập</a></li>
+                </ul>
             </div>
-            <div class="tab-content row">
-                <table class="table table-light mt-3 mx-auto pt-4">
-                    <thead>
-                    </thead>
-                    <tbody id="campaigns-tbody">
-                        <!-- content show here -->
-                        <tr>
-                            <td><strong>Fullname: </strong></td>
-                            <td><p id="fullname" class="ml-5"></p></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Email: </strong></td>
-                            <td><p id="email" class="ml-5"></p></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Wallet's Address: </strong></td>
-                            <td><p id="address" class="ml-5"></p></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Username: </strong></td>
-                            <td><p id="username" class="ml-5"></p></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Token: </strong></td>
-                            <td><p id="token" class="ml-5"></p></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        </div>
+    </div> <!-- end top header -->
 
+    <!-- title -->
+    <div class="row">
+        <div class="col-md-12 mt-3">
+            <h1 class="text-center">Gây quỹ từ thiện</h1>
+            <hr />
+            <br />
+        </div>
+    </div><!-- end title -->
+
+
+    <!-- cotnent -->
+    <div class="row">
+        <div class="col-md-3">
+            <!-- left sidebar -->
+            <aside class="left-sidebar">
+
+                <div id="account-information-link" class="profile active">
+                    <a href="#account-information" onclick="showDialog('account-information-link')"><i class="fas fa-address-card"></i>Thông
+                        tin tài
+                        khoản</a>
+                </div>
+
+                <div id="profile-link" class="profile">
+                    <a href="#profile" onclick="showDialog('profile-link')"><i class="fas fa-user-alt"></i>Hồ sơ cá
+                        nhân</a>
+                </div>
+
+                <div id="change-password-link" class="profile">
+                    <a href="#change-password" onclick="showDialog('change-password-link')"><i class="fas fa-key    "></i>Đổi
+                        mật khẩu</a>
+                </div>
+
+                <div id="transfer-link" class="profile">
+                    <a href="#transfer" onclick="showDialog('transfer-link')"><i class="fas fa-donate    "></i>Nạp /
+                        Đổi
+                        token</a>
+                </div>
+
+                <div id="transfer-history-link" class="profile-bill-info">
+                    <a id="transfer-history-btn" href="#"><i class="fas fa-money-bill"></i>Lịch sử giao dịch</a>
+                </div>
+
+                <div id="donated-campaign-list-link" class="profile-order-history">
+                    <a id="donated-campaign-list-btn" href="#"> <i class="fas fa-book"></i>Lịch sử quyên góp</a>
+                </div>
+                <div id="created-campaign-list-link" class="profile-order-history">
+                    <a id="created-campaign-list-btn" href="#"> <i class="fas fa-book"></i>Danh sách chiến dịch</a>
+                </div>
+
+                <div class="profile-logout-btn">
+                    <a id="logout-btn" href="#"><i class="fas fa-sign-out-alt"></i>Đăng xuất</a>
+                </div>
+            </aside><!-- end left sidebar -->
+        </div>
+
+        <div class="col-md-9">
+            <!-- right content -->
+            <div class="right-content">
+                <div class=" d-none loader-log-in mx-auto my-3"></div>
+
+                <!-- account information -->
+                <div id='account-information' class="account-information-container">
+                    <table>
+                        <tfoot>
+                            <tr>
+                                <th><i class="fas fa-dice-d20    "></i> Tài khoản</th>
+                                <td id="account-username"></td>
+                            </tr>
+                            <tr>
+                                <th><i class="fas fa-user-tag    "></i> Người sở hữu</th>
+                                <td id="account-owner"></td>
+                            </tr>
+                            <tr>
+                                <th><i class="fas fa-wallet    "></i> Địa chỉ ví Ethereum</th>
+                                <td id="account-address"></td>
+                            </tr>
+                            <tr>
+                                <th><i class="fas fa-donate    "></i> Số Token hiện có</th>
+                                <td id="account-tokens"></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div><!-- end account information -->
+
+                <!-- profile -->
+                <div id='profile' class="profile-container">
+                    <form action="#">
+                        <div class="form-group">
+                            <label for="f-fullname">Họ tên</label>
+                            <input id="f-fullname" class="form-control" type="text">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="f-birthdate" class="font-weight-bold">Ngày sinh</label>
+                            <input type="date" class="form-control" id="f-birthdate">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="font-weight-bold">Giới tính</label>
+                            <input type="radio" name="gender" id="f-male"> <span>Nam</span>
+                            <input type="radio" name="gender" id="f-female"><span>Nữ</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="f-email">Email</label>
+                            <input type="email" class="form-control" name="email-name" id="f-email">
+                        </div>
+                        <div class="form-group">
+                            <label for="f-phone">Số điện thoại</label>
+                            <input id="f-phone" class="form-control" type="text">
+                        </div>
+                        <div id="profile-loader" class=" d-none loader-log-in mx-auto my-3"></div>
+
+                        <div class=" d-none alert alert-danger my-3" id="profile-error_txt"></div>
+                        <div class="form-group submit-btn">
+                            <a id="update-btn" href="#">Lưu</a>
+                        </div>
+                    </form>
+                </div><!-- end profile -->
+
+                <!-- change password -->
+                <div id='change-password' class="change-password-container">
+                    <form action="#">
+                        <div class="form-group">
+                            <label for="f-old-password">Mật khẩu hiện tại</label>
+                            <input id="f-old-password" class="form-control" type="password">
+                        </div>
+                        <div class="form-group">
+                            <label for="f-new-password">Mật khẩu mới</label>
+                            <input id="f-new-password" class="form-control" type="password">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="f-confirm-new-password">Xác nhận mật khẩu mới</label>
+                            <input id="f-confirm-new-password" class="form-control" type="password">
+                        </div>
+
+                        <div class="form-group">
+                            <p style="color: red" id="change-pwd-error"></p>
+                        </div>
+                        <div id="change-password-loader" class=" d-none loader-log-in mx-auto my-3"></div>
+                        <div class=" d-none alert alert-danger my-3" id="change-password-error_txt"></div>
+                        <div class="form-group submit-btn">
+                            <a id="change-password-btn" href="#">Đổi mật khẩu</a>
+                        </div>
+                    </form>
+                </div><!-- end change password -->
+
+                <!-- transfer -->
+                <div id='transfer' class="transfer-container">
+                    <div class="transfer-remaining-token">
+                        <h3>Số token hiện có <span id="transfer-token" class="badge badge-primary"></span></h3>
+                    </div>
+                    <!-- transfer to token -->
+                    <div class="transfer-to-token">
+                        <h4>Nạp Token</h4>
+                        <form action="#">
+                            <div class="form-group">
+                                <label for="to-token-amount" class="font-weight-bold">Số token muốn nạp: (1 Token = 1 Gwei)</label>
+                                <input type="number" class="form-control" id="to-token-amount" required="true" value="1"
+                                    min="1">
+                            </div>
+                            <input type="date" class="form-control" id="to-token-date" hidden = "true" readonly="true">
+
+                            <div id="to-token-loader" class=" d-none loader-log-in mx-auto my-3"></div>
+                            <div class=" d-none alert alert-danger my-3" id="to-token-error_txt"></div>
+                            <div class="form-group submit-btn">
+                                <a id="transfer-to-token-btn" href="#">Nạp</a>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- transfer to ether -->
+                    <div class="transfer-to-ether">
+                        <h4>Đổi Token</h4>
+                        <form action="#">
+                            <div class="form-group">
+                                <label for="to-ether-amount" class="font-weight-bold">Số token muốn đổi: (1 Token = 1 Gwei)</label>
+                                <input type="number" class="form-control" id="to-ether-amount" required="true" value="1"
+                                    min="1">
+                            </div>
+                            <input type="date" class="form-control" id="to-ether-date" hidden = "true" readonly="true">
+                            <div id="to-ether-loader" class=" d-none loader-log-in mx-auto my-3"></div>
+                            <div class=" d-none alert alert-danger my-3" id="to-ether-error_txt"></div>
+                            <div class="form-group submit-btn">
+                                <a id="transfer-to-ether-btn" href="#">Đổi</a>
+                            </div>
+                        </form>
+                    </div>
+                </div><!-- end transfer -->
+
+                <!-- transfer history -->
+                <div id="transfer-history" class="row">
+
+                    <div class="table-container">
+                        <h4>Lịch sử nạp - rút token</h4>
+                        <table id="transfer-history-tbl" class="table-hover ">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Ngày</th>
+                                    <th>Hình thức</th>
+                                    <th>Số Token</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbl-transfer-tbody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div><!-- end product detail -->
+
+                <!-- created campaign list -->
+                <div id="created-campaign-list" class="row">
+                    <div class="table-container">
+                        <h4>Danh sách chiến dịch đang sở hữu</h4>
+                        <table class="table-hover campaign-list-tbl">
+                            <thead>
+                                <tr>
+                                    <th>Mã</th>
+                                    <th>Tên chiến dịch</th>
+                                    <th>Quỹ Token</th>
+                                    <th>Số giao dịch</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbl-created-campaign-list-tbody">
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="tbl-seperate"></div>
+
+                </div><!-- end campaign list -->
+
+                <!-- donated campaign list -->
+                <div id="donated-campaign-list" class="row">
+                    <div class="table-container">
+                        <h4>Lịch sử quyên góp</h4>
+                        <table class="table-hover campaign-list-tbl">
+                            <thead>
+                                <tr>
+                                    <th>Ngày</th>
+                                    <th>Tên chiến dịch</th>
+                                    <th>Đã quyên góp</th>
+                                    <th>Lời nhắn</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbl-donated-campaign-list-tbody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div><!-- end right content -->
         </div>
     </div>
 
@@ -89,6 +307,77 @@
     <script src="https://unpkg.com/ipfs/dist/index.min.js"></script>
     <script src="js/app.js"></script>
     <script src="js/profile.js"></script>
+    <script>
+        function showDialog(idDiv) {
+            switch (idDiv) {
+                case "profile-link":
+                    $("#profile").fadeIn();
+                    $("#account-information").hide();
+                    $("#change-password").hide();
+                    $("#transfer").hide();
+                    $("#transfer-history").hide();
+                    $("#created-campaign-list").hide();
+                    $("#donated-campaign-list").hide();
+                    document.getElementById("profile-link").classList.add("active");
+                    document.getElementById("account-information-link").classList.remove("active");
+                    document.getElementById("change-password-link").classList.remove("active");
+                    document.getElementById("transfer-link").classList.remove("active");
+                    document.getElementById("transfer-history-link").classList.remove("active");
+                    document.getElementById("created-campaign-list-link").classList.remove("active");
+                    document.getElementById("donated-campaign-list-link").classList.remove("active");
+                    break;
+                case "account-information-link":
+                    $("#account-information").fadeIn();
+                    $("#profile").hide();
+                    $("#change-password").hide();
+                    $("#transfer").hide();
+                    $("#transfer-history").hide();
+                    $("#created-campaign-list").hide();
+                    $("#donated-campaign-list").hide();
+                    document.getElementById("account-information-link").classList.add("active");
+                    document.getElementById("profile-link").classList.remove("active");
+                    document.getElementById("change-password-link").classList.remove("active");
+                    document.getElementById("transfer-link").classList.remove("active");
+                    document.getElementById("transfer-history-link").classList.remove("active");document.getElementById("created-campaign-list-link").classList.remove("active");
+                    document.getElementById("donated-campaign-list-link").classList.remove("active");
+                    break;
+                case "change-password-link":
+                    $("#change-password").fadeIn();
+                    $("#profile").hide();
+                    $("#account-information").hide();
+                    $("#transfer").hide();
+                    $("#transfer-history").hide();
+                    $("#created-campaign-list").hide();
+                    $("#donated-campaign-list").hide();
+                    document.getElementById("change-password-link").classList.add("active");
+                    document.getElementById("profile-link").classList.remove("active");
+                    document.getElementById("account-information-link").classList.remove("active");
+                    document.getElementById("transfer-link").classList.remove("active");
+                    document.getElementById("transfer-history-link").classList.remove("active");document.getElementById("created-campaign-list-link").classList.remove("active");
+                    document.getElementById("donated-campaign-list-link").classList.remove("active");
+                    break;
+                case "transfer-link":
+                    $("#profile").hide();
+                    $("#account-information").hide();
+                    $("#change-password").hide();
+                    $("#transfer").fadeIn();
+                    $("#transfer-history").hide();
+                    $("#created-campaign-list").hide();
+                    $("#donated-campaign-list").hide();
+                    document.getElementById("transfer-link").classList.add("active");
+                    document.getElementById("change-password-link").classList.remove("active");
+                    document.getElementById("profile-link").classList.remove("active");
+                    document.getElementById("account-information-link").classList.remove("active");
+                    document.getElementById("transfer-history-link").classList.remove("active");
+                    document.getElementById("created-campaign-list-link").classList.remove("active");
+                    document.getElementById("donated-campaign-list-link").classList.remove("active");
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    </script>
 </body>
 
 </html>
