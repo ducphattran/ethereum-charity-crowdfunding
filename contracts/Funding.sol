@@ -8,18 +8,21 @@ contract Funding {
     mapping (bytes => uint) private ipfsHashToIndex; // get Index from ipfsHash of Account
     mapping (uint => Campaign) private idToCampaign; // get Campaign from id of a campaign
     mapping (uint => transactionLog) private idToTransLog; // get transactionLog from id of transactionLog
+    mapping (uint => tokenExchangeLog) private idToExchangeLog; // get tokenExchangeLog from id of tokenExchangeLog
     mapping (bytes => uint) private nameOfCampToIndex; //get Index from name of Campaign
     
     Account[] public accounts;
     address[] private addresses;
     bytes16[] private usernames;
     bytes[] private ipfsHashes; 
-    int256[][] private tokenExchangeLogs;
+    uint256[][] private tokenExchangeLogs;
     bytes[] private namesOfCamp;
     uint256[][] private campaignsByIndex;
     uint256[][] private transactionsByIdCamp;
+    uint256[][] private donateLogs;
     uint256 private numOfCamp;
     uint256 private numOfTrans;
+    uint256 private numOfExchanges;
     
     constructor () public {
         Account memory acc = Account("admin","charity","not-available",0);
@@ -27,11 +30,16 @@ contract Funding {
         accounts.push(acc);
         addresses.push(msg.sender);
         usernames.push("admin");
-        tokenExchangeLogs.push([0]);
         campaignsByIndex.push([0]);
-        
+        donateLogs.push([0]);
         numOfCamp = 0;
-        numOfTrans = 0;
+        numOfTrans = 1; // watse 1st index of Transaction for each campaign
+        numOfExchanges = 1;
+        // create token exchange log 
+        tokenExchangeLog memory tokenExLog  = tokenExchangeLog(0,acc.username,0,"not-available");
+        idToExchangeLog[0] = tokenExLog;
+        tokenExchangeLogs.push([0]);
+        
         // create 1st campaign
         namesOfCamp.push("this campaign is used to waste the 1st index");
         nameOfCampToIndex["this campaign is used to waste the 1st index"] = namesOfCamp.length -1 ;
@@ -46,9 +54,16 @@ contract Funding {
     
     struct transactionLog{
         uint256 id;
-        uint256 fromIndexAcc;
+        bytes16 fromUsername;
         uint toIdCamp;
-        uint numOfToken;
+        int numOfToken;
+        bytes ipfsHash;
+    }
+    
+    struct tokenExchangeLog {
+        uint256 id;
+        bytes16 ownerUsername;
+        int numOfToken;
         bytes ipfsHash;
     }
     
@@ -84,6 +99,14 @@ contract Funding {
         _;
     }
 
+    function updateAccount(bytes16 username,bytes password,bytes ipfsHash) public returns (bool success) {
+        require(checkAuth(username,password));
+        Account memory acc = accounts[usernameToIndex[username]];
+        acc.ipfsHash = ipfsHash;
+        accounts[usernameToIndex[acc.username]] = acc;
+        return true;
+    }
+
     function createAccount(bytes16 username,bytes password,bytes ipfsHash) public returns (bool success)
     {
         require(!hadAccount(msg.sender));
@@ -94,28 +117,30 @@ contract Funding {
         usernames.push(username);
         addresses.push(msg.sender);
         ipfsHashes.push(ipfsHash);
-        tokenExchangeLogs.push([0]);
         campaignsByIndex.push([0]);
+        donateLogs.push([0]);
         
         addressToIndex[msg.sender] = addresses.length - 1;
         addressToAccount[msg.sender] = acc;
         usernameToIndex[username] = usernames.length - 1;
         ipfsHashToIndex[ipfsHash] = ipfsHashes.length - 1;
         
+        
+        // create token exchange log 
+        tokenExchangeLog memory tokenExLog  = tokenExchangeLog(0,acc.username,0,"not-available");
+        idToExchangeLog[0] = tokenExLog;
+        tokenExchangeLogs.push([0]);
+        
         return true;
     }
     
-    function changePassword(bytes16 username,bytes oladPassword,bytes newPassword)
+    function changePassword(bytes16 username,bytes oldPassword,bytes newPassword)
     public returns (bool success){
-        require(usernameTaken(username));
+        require(checkAuth(username,oldPassword));
         Account memory acc = accounts[usernameToIndex[username]];
-         if(acc.username == username && keccak256(acc.password) == keccak256(oladPassword)){
-            acc.password = newPassword;
-            accounts[usernameToIndex[acc.username]] = acc;
-            return true;
-        }else{
-            return false;
-        }
+        acc.password = newPassword;
+        accounts[usernameToIndex[acc.username]] = acc;
+        return true;
     }
     
     function checkAuth(bytes16 username,bytes password) public view returns(bool success){
@@ -132,25 +157,38 @@ contract Funding {
         return addresses[usernameToIndex[username]];
     }
 
-    function exchangeToToken() payable minPrice(msg.value) public returns (bool success){
+    function exchangeToToken(bytes ipfsHash) payable minPrice(msg.value) public returns (bool success){
         int256 numOfToken = int256(msg.value/1000000000);
         // get Account
         Account storage acc = addressToAccount[msg.sender];
         acc.token += numOfToken;
         accounts[usernameToIndex[acc.username]] = Account(acc.username,acc.password,acc.ipfsHash,acc.token);
-        // add to tokenExchangeLogs
-        tokenExchangeLogs[usernameToIndex[acc.username]].push(numOfToken);
+        
+        // create token exchange log 
+        tokenExchangeLog memory tokenExLog  = tokenExchangeLog(numOfExchanges,acc.username,int256(numOfToken),ipfsHash);
+        idToExchangeLog[numOfExchanges] = tokenExLog;
+        tokenExchangeLogs[addressToIndex[msg.sender]].push(numOfExchanges);
+        numOfExchanges +=1;
         
         return true;
     }
     
-    function exchangeToEther(uint256 fromToken,uint256 toEther,bytes16 username, bytes password) public returns(bool success){
+    function exchangeToEther(uint256 fromToken,bytes16 username, bytes password,bytes ipfsHash) public returns(bool success){
         require(checkAuth(username,password));
-        require(fromToken >= toEther*1000000000);
+        
+        // require(fromToken >= toEther*1000000000);
         Account memory acc = accounts[usernameToIndex[username]];
         require(uint256 (acc.token) >= fromToken);
         require(getBal() >= uint256 (fromToken*1000000000));
-        msg.sender.transfer(toEther);
+        msg.sender.transfer(fromToken*1000000000);
+        acc.token -= int256(fromToken);
+        accounts[usernameToIndex[acc.username]] = Account(acc.username,acc.password,acc.ipfsHash,acc.token);
+        
+        // create token exchange log 
+        tokenExchangeLog memory tokenExLog  = tokenExchangeLog(numOfExchanges,acc.username,int256(fromToken)*-1,ipfsHash);
+        idToExchangeLog[numOfExchanges] = tokenExLog;
+        tokenExchangeLogs[usernameToIndex[acc.username]].push(numOfExchanges);
+        numOfExchanges +=1;
         return true;
     }
     
@@ -160,8 +198,18 @@ contract Funding {
         return (addresses[usernameToIndex[username]],acc.username,acc.password,acc.token,acc.ipfsHash);
     }
 
-    function getTokenExchangeLog (bytes16 username) public view returns(int256[] tokensExchange){
+    function getListOfTokenExchangeLog (bytes16 username) public view returns(uint256[] tokensExchange){
         return tokenExchangeLogs[usernameToIndex[username]];
+    }
+    
+    function getTokenExchangeLog (uint256 idTokenExchangeLog) 
+    public view returns (uint256 idTokenExLog, bytes16 ownerUsername, int256 tokens, bytes ipfsHash){
+        tokenExchangeLog memory exLog = idToExchangeLog[idTokenExchangeLog];
+        return (exLog.id,exLog.ownerUsername,exLog.numOfToken,exLog.ipfsHash);
+    }
+    
+    function getDonateLog (bytes16 username) public view returns(uint256[]){
+        return donateLogs[usernameToIndex[username]];
     }
     
     function createCampaign(bytes16 username,bytes nameOfCamp,bytes campaignIpfsHash) public 
@@ -177,6 +225,11 @@ contract Funding {
         transactionsByIdCamp.push([0]);
         return true;
     }
+
+    function getListCampaignByUsername(bytes16 username) public 
+    view returns (uint256[] campaignsList) {
+        return campaignsByIndex[usernameToIndex[username]];
+    }
     
     function getCampaign (uint256 idCampaign) public 
     view returns (uint256 id,bytes16 creatorUsername,int256 numOfToken,uint256 numberOfTrans,bytes ipfsHash){
@@ -189,12 +242,12 @@ contract Funding {
     }
         
     function getTransactionById(uint256 idTransaction) public
-    view returns(uint256 id,uint256 fromIndexAcc,uint toIdCamp,uint numOfToken,bytes ipfsHash){
+    view returns(uint256 id,bytes16 fromUsername,uint toIdCamp,int numOfToken,bytes ipfsHash){
         transactionLog memory trans = idToTransLog[idTransaction];
-        return (trans.id,trans.fromIndexAcc,trans.toIdCamp,trans.numOfToken,trans.ipfsHash);
+        return (trans.id,trans.fromUsername,trans.toIdCamp,trans.numOfToken,trans.ipfsHash);
     }
  
-    function donate(uint256 tokens,uint256 idCampaign,bytes16 username,bytes password,bytes transIpfsHash) public returns (bool success){
+    function donate(uint256 tokens,uint256 idCampaign,bytes16 username,bytes password,bytes transIpfsHash,bytes exchangeIpfsHash) public returns (bool success){
         require(checkAuth(username,password));
         Account memory acc = accounts[usernameToIndex[username]];
         require(acc.token >= int256 (tokens));
@@ -205,17 +258,45 @@ contract Funding {
         camp.numOfToken += int256 (tokens);
         camp.numOfTrans += 1;
         idToCampaign[idCampaign] = camp;
-        
-        transactionLog memory trans = transactionLog(numOfTrans,usernameToIndex[username]
-        ,idCampaign,tokens,transIpfsHash);
-        if(camp.numOfTrans-1 == 0){
-            transactionsByIdCamp[idCampaign].push(0);
-        }else{
+
+        transactionLog memory trans = transactionLog(numOfTrans,username,idCampaign,int256(tokens),transIpfsHash);
         transactionsByIdCamp[idCampaign].push(numOfTrans);
-        }
         idToTransLog[numOfTrans] = trans;
+        donateLogs[usernameToIndex[username]].push(numOfTrans);
+        
+        // create token exchange log 
+        tokenExchangeLog memory tokenExLog  = tokenExchangeLog(numOfExchanges,acc.username,int256(tokens)*-1,exchangeIpfsHash);
+        idToExchangeLog[numOfExchanges] = tokenExLog;
+        tokenExchangeLogs[usernameToIndex[acc.username]].push(numOfExchanges);
+        numOfExchanges +=1;
         numOfTrans += 1;
         return true;
+    }
+    
+    function withDraw(bytes16 username, bytes password, uint256 idCampaign, uint256 withdrawTokens,bytes transIpfsHash,bytes exchangeIpfsHash)
+    public returns (bool){
+        require(checkAuth(username,password));
+        Campaign memory camp = idToCampaign[idCampaign];
+        require(camp.numOfToken >= int256(withdrawTokens));
+        camp.numOfToken -= int256(withdrawTokens);
+        idToCampaign[idCampaign] = camp;
+        
+        Account memory acc = accounts[usernameToIndex[username]];
+        acc.token += int256 (withdrawTokens);
+        accounts[usernameToIndex[username]] = acc;
+
+        transactionLog memory trans = transactionLog(numOfTrans,username,idCampaign,int256(withdrawTokens)*-1,transIpfsHash);
+        transactionsByIdCamp[idCampaign].push(numOfTrans);
+        idToTransLog[numOfTrans] = trans;
+
+        // create token exchange log 
+        tokenExchangeLog memory tokenExLog  = tokenExchangeLog(numOfExchanges,acc.username,int256(withdrawTokens),exchangeIpfsHash);
+        idToExchangeLog[numOfExchanges] = tokenExLog;
+        tokenExchangeLogs[usernameToIndex[acc.username]].push(numOfExchanges);
+        numOfExchanges +=1;
+        numOfTrans += 1;
+        return true;
+        
     }
     
     function getUserCount() public view returns(uint count)
@@ -231,5 +312,10 @@ contract Funding {
     function getTransCount() public view returns(uint count)
     {
         return numOfTrans;
+    }    
+    function getExchangesCount() public view returns(uint count)
+    {
+        return numOfExchanges;
     }
+
 }

@@ -13,7 +13,7 @@
  */
 
 var HDWalletProvider = require("truffle-hdwallet-provider");
-var mnemonic = "ahead public rate certain seat today until health spread off punch trophy";
+var mnemonic = "gift pioneer warrior timber dust fix game behave lobster harsh stool suggest";
 module.exports = {
   // See <http://truffleframework.com/docs/advanced/configuration>
   // to customize your Truffle configuration!
@@ -28,7 +28,7 @@ module.exports = {
         return new HDWalletProvider(mnemonic, "https://ropsten.infura.io/v3/640d8cc3f12148e6b511453827f6c57c")
       },
       network_id: 3,
-      gas: 4500000,
+      gas: 6500000,
       gasPrice: 1000000000,
     }
   }
