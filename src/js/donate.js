@@ -134,7 +134,7 @@ Donate = {
                             window.App.hexToBytes(localStorage.getItem("transactionDataToIpfs"), "bytes"),
                             window.App.hexToBytes(localStorage.getItem("donateExchangeLogDataToIpfs"), "bytes"), {
                                 from: account,
-                                gas: 5500000,
+                                gas: 6500000,
                                 gasPrice: 1000000000,
                             });
                     }).then(function (result) {

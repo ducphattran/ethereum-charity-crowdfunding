@@ -136,8 +136,8 @@ Withdraw = {
                             window.App.hexToBytes(localStorage.getItem("withdrawDataToIpfs"), "bytes"),
                             window.App.hexToBytes(localStorage.getItem("withdrawExchangeLogDataToIpfs"), "bytes"),  {
                                 from: account,
-                                gas: 350000,
-                                gasPrice: 100000,
+                                gas: 4500000,
+                                gasPrice: 1000000,
                             });
                     }).then(function (result) {
                         console.log(result);

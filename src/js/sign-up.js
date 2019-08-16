@@ -111,7 +111,7 @@ SignUp = {
                                     window.App.hexToBytes(web3.sha3(inputPassword), 32), //bytes32 password
                                     window.App.hexToBytes(ipfsHash, "bytes"), { //bytes ipfshHash
                                         from: account,
-                                        gas: 4500000,
+                                        gas: 6500000,
                                         gasPrice: 1000000000,
                                     });
                             }).then(function (result) {

@@ -152,7 +152,7 @@ Profile = {
                             window.App.account.password, //bytes32 password
                             window.App.hexToBytes(ipfsHash, "bytes"), { //bytes ipfshHash
                                 from: account,
-                                gas: 4500000,
+                                gas: 6500000,
                                 gasPrice: 1000000000,
                             });
                     }).then(function (result) {
@@ -200,7 +200,7 @@ Profile = {
                     window.App.account.password, //bytes32 password
                     newPwd, { //bytes ipfshHash
                         from: account,
-                        gas: 4500000,
+                        gas: 6500000,
                         gasPrice: 1000000000,
                     });
             }).then(function (result) {
@@ -285,7 +285,7 @@ Profile = {
                         return fundingInstance.exchangeToToken(
                             ipfsHash, {
                                 from: account,
-                                gas: 4500000,
+                                gas: 6500000,
                                 gasPrice: 1000000000,
                                 value: sendingAmount,
                             });
@@ -352,7 +352,7 @@ Profile = {
                             window.App.account.password,
                             ipfsHash, {
                                 from: account,
-                                gas: 4500000,
+                                gas: 6500000,
                                 gasPrice: 1000000000,
                             });
                     }).then(function (result) {

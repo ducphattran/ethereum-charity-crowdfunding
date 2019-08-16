@@ -90,7 +90,7 @@ Campaign = {
                             window.App.hexToBytes(document.getElementById("name").value, "bytes"),
                             window.App.hexToBytes(ipfsHash, "bytes"), {
                                 from: account,
-                                gas: 5500000,
+                                gas: 6500000,
                                 gasPrice: 1000000000,
                             });
                     }).then(function (result) {
