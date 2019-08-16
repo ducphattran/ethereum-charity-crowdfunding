@@ -18,19 +18,19 @@ This project is bulit along with other sources, so please make sure to install t
 After finishing to pull the project, run this command to install dependencies:
 
 ```
-**npm install**
+npm install
 ```
 
-If you had any error while running above command about **node-gyp**, **Python** and **Windows Build Tool**, then run these following commands:
+If you had any error while running above command about **node-gyp**, **python** and **Windows Build Tool**, then run these following commands:
 
 * To install **node-gyp**
 ```
-**npm install -g node-gyp**
+npm install -g node-gyp
 ```
 
 * To install **Windows Build Tool**
 ```
-**npm install --global --production windows-build-tools**
+npm install --global --production windows-build-tools
 ```
 
 # MetaMask and the network
@@ -41,20 +41,20 @@ To get this project run , you must have an account (or a wallet) on the ethereum
 With MetaMask, when you first access it , you should insert the **MNEMONIC** which you can get from Ganache or inside the **truffle-config.js** / **truffle.js** (if you use Ropsten).
 
 # Deployment
-When you got a wallet, then type these command which provided by **Truffle** to compile and migrate the **Smart Contract**(SC) to blockchain network:
+When you got a wallet, then type these command which provided by **Truffle** to compile and migrate the **Smart Contract** (SC) to blockchain network:
 
-* To compile the SC**
+* To compile the SC
 ```
-**truffle compile**
+truffle compile
 ```
-* To migrate the SC to network**
+* To migrate the SC to network
 ```
-**Truffle migrate**
+truffle migrate
 ```
 
 When you fisnished to migrate the SC, run this command to open the Lite Server:
 ```
-**npm run dev**
+npm run dev
 ```
 
 ___
