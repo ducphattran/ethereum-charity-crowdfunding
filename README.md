@@ -5,14 +5,14 @@ People can transfer **Ether** to **Token** into their account for donation and i
 
 # Before the installation
 This project is bulit along with other sources, so please make sure to install these platforms / sources:
-⋅⋅* Npm and Nodejs
-⋅⋅* Truffle Framework
-⋅⋅* Ganache (for local test)
-⋅⋅* MetaMask (An Extension on Chrome)
-⋅⋅* Web3
-⋅⋅* truffle-hdwallet-provider
-⋅⋅* IPFS
-⋅⋅* Lite Server
+* Npm and Nodejs
+* Truffle Framework
+* Ganache (for local test)
+* MetaMask (An Extension on Chrome)
+* Web3
+* truffle-hdwallet-provider
+* IPFS
+* Lite Server
 
 # Installation
 After finishing to pull the project, run this command to install dependencies:
@@ -41,13 +41,13 @@ To get this project run , you must have an account (or a wallet) on the ethereum
 With MetaMask, when you first access it , you should insert the **MNEMONIC** which you can get from Ganache or inside the **truffle-config.js** / **truffle.js** (if you use Ropsten).
 
 # Deployment
-When you got a wallet, then type these command which provided by **Truffle** to compile and migrate the **Smart Contract** (SC) to blockchain network:
+When you got a wallet, then type these command which provided by **Truffle** to compile and migrate the **Smart Contract (SC)**  to blockchain network:
 
-* To compile the SC
+* To compile the **SC**
 ```
 truffle compile
 ```
-* To migrate the SC to network
+* To migrate the **SC** to network
 ```
 truffle migrate
 ```
