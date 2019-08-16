@@ -65,7 +65,7 @@ App = {
                 '<li><a href="create-campaign.html">Tạo chiến dịch</a></li>' +
                 '</ul>' +
                 '</li>'+
-                '<li ><a id="logout-btn" href="#" >Đăng xuất</a></li>';
+                '<li ><a class="logout-btn" href="#" >Đăng xuất</a></li>';
         } else {headerLink.children[0].innerHTML =
             '<li ><a href="sign-up.html" >Đăng ký</a></li>' +
             '<li ><a href="log-in.html" >Đăng nhập</a></li>';
@@ -78,7 +78,7 @@ $(function () {
     $(window).load(function () {
         App.init();
 
-        $("#logout-btn").click(function(){
+        $(".logout-btn").click(function(){
         event.preventDefault();
         sessionStorage.clear();
         return window.location.href = "/index.html";
