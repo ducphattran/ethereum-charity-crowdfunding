@@ -38,7 +38,7 @@ To get this project run , you must have an account (or a wallet) on the ethereum
 1. Local ( Ganache)
 2. Ropsten (Ethereum testnet)
 
-With MetaMask, when you first access it , you should insert the **MNEMONIC** which you can get from Ganache or inside the **truffle-config.js** / **truffle.js** (if you use Ropsten).
+With MetaMask, when you first access it , you should insert the **MNEMONIC** which you can get from Ganache or inside the **truffle-config.js** / **truffle.js** which I created (if you use Ropsten).
 
 # Deployment
 When you got a wallet, then type these command which provided by **Truffle** to compile and migrate the **Smart Contract (SC)**  to blockchain network:
@@ -47,7 +47,7 @@ When you got a wallet, then type these command which provided by **Truffle** to 
 ```
 truffle compile
 ```
-* To migrate the **SC** to network
+* To migrate the **SC** to blockchain network
 ```
 truffle migrate
 ```
