@@ -58,7 +58,8 @@ Profile = {
         const node = new Ipfs();
         node.once('ready', () => {
             console.log('Online status: ', node.isOnline() ? 'online' : 'offline');
-            node.files.cat(web3.toAscii(window.App.account.ipfsHash), function (err, data) {
+            // node.files.cat(web3.toAscii(window.App.account.ipfsHash), function (err, data) {
+            node.cat(web3.toAscii(window.App.account.ipfsHash), function (err, data) {
                 if (err) {
                     return console.error('Error - ipfs files cat', err, data)
                 }
@@ -123,7 +124,7 @@ Profile = {
             console.log('Online status: ', node.isOnline() ? 'online' : 'offline');
 
             //save to ipfs
-            node.files.add(new node.types.Buffer(JSON.stringify(infoJson)),
+            node.add(new Ipfs.Buffer(JSON.stringify(infoJson)),
                 function (error, filesAdded) {
                     if (error) {
                         console.log(error);
@@ -255,7 +256,7 @@ Profile = {
         const node = new Ipfs();
         node.once('ready', () => {
             //save to ipfs
-            node.files.add(new node.types.Buffer(JSON.stringify(jsonData)),
+            node.add(new Ipfs.Buffer(JSON.stringify(jsonData)),
                 function (error, filesAdded) {
                     if (error) {
                         console.log(error);
@@ -321,7 +322,7 @@ Profile = {
         const node = new Ipfs();
         node.once('ready', () => {
             //save to ipfs
-            node.files.add(new node.types.Buffer(JSON.stringify(jsonData)),
+            node.add(new Ipfs.Buffer(JSON.stringify(jsonData)),
                 function (error, filesAdded) {
                     if (error) {
                         console.log(error);
@@ -426,7 +427,7 @@ Profile = {
         const node = new Ipfs();
         node.once('ready', () => {
             // tokenExchangeLog (exLog.id,exLog.ownerUsername,exLog.numOfToken,exLog.ipfsHash);
-            node.files.cat(web3.toAscii(tokenExchangeLog[3]),
+            node.cat(web3.toAscii(tokenExchangeLog[3]),
                 function (err, data) {
                     if (err) {
                         return console.error('Error - ipfs files cat', err, data)
@@ -555,7 +556,7 @@ Profile = {
                     const node = new Ipfs();
                     node.once('ready', () => {
                         // returns (uint256 id ,bytes16 creatorUsername,int256 numOfToken,uint256 numberOfTrans,bytes ipfsHash)
-                        node.files.cat(web3.toAscii(campaign[4]),
+                        node.cat(web3.toAscii(campaign[4]),
                             function (err, data) {
                                 if (err) {
                                     return console.error('Error - ipfs files cat', err, data)
@@ -563,8 +564,7 @@ Profile = {
                                 localStorage.setItem("createdCampaignToTblIpfs", data.toString());
                             })
                     });
-                    var jsonInfo;
-                    jsonInfo = JSON.parse(localStorage.getItem("createdCampaignToTblIpfs"));
+                    var jsonInfo = JSON.parse(localStorage.getItem("createdCampaignToTblIpfs"));
                     console.log(jsonInfo);
                     // var jsonData = {
                     //    nameOfCampaign,createdByUsername,createdDate,description
@@ -608,7 +608,7 @@ Profile = {
                     const node = new Ipfs();
                     node.once('ready', () => {
                         // transaction (trans.id,trans.fromUsername,trans.toIdCamp,trans.numOfToken,trans.ipfsHash)
-                        node.files.cat(web3.toAscii(transaction[4]),
+                        node.cat(web3.toAscii(transaction[4]),
                             function (err, data) {
                                 if (err) {
                                     return console.error('Error - ipfs files cat', err, data)
@@ -616,7 +616,7 @@ Profile = {
                                 localStorage.setItem("donatedTransactionToTblIpfs", data.toString());
                             })
                         // returns (uint256 id ,bytes16 creatorUsername,int256 numOfToken,uint256 numberOfTrans,bytes ipfsHash)
-                        node.files.cat(web3.toAscii(campaign[4]),
+                        node.cat(web3.toAscii(campaign[4]),
                             function (err, data) {
                                 if (err) {
                                     return console.error('Error - ipfs files cat', err, data)
@@ -630,7 +630,7 @@ Profile = {
                     // var jsonData = {
                     //    nameOfCampaign,createdByUsername,createdDate,description
                     //};
-                    tdDate.innerText = tranJsonInfo.onDate;
+                    tranJsonInfo.onDate !== null ? tdDate.innerText = tranJsonInfo.onDate : tdDate.innerText = null;
                     var campLink = document.createElement("a");
                     campLink.href = "campaign.html?id=" + campaign[0].toNumber();
                     campLink.innerText = campJsonInfo.nameOfCampaign;

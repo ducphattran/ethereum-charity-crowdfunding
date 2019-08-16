@@ -61,7 +61,7 @@ SignUp = {
 
                 signUpForm.remove();
 
-                //add to ipfs
+                //input data from form to json for IPFS
                 var jsonData = {
                     "username": inputUsername,
                     "fullname": inputFullname,
@@ -70,15 +70,17 @@ SignUp = {
                     "birthdate": "null",
                     "gender": "null",
                 };
-                //showLoader()
+
+                // showLoader()
                 var loader = document.createElement("div");
 
                 loader.className = "loader-sign-up mx-auto mt-5";
                 signUpSection.appendChild(loader);
-
                 
                 //save to ipfs
-                node.files.add(new node.types.Buffer(JSON.stringify(jsonData)),
+                // node.files.add(new node.types.Buffer(JSON.stringify(jsonData)),
+                console.log(node);
+                node.add(new Ipfs.Buffer(JSON.stringify(jsonData)),
                     function (error, filesAdded) {
                         if (error) {
                             console.log(error);

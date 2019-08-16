@@ -59,7 +59,7 @@ Transaction = {
 								})
 								node.once('ready', () => {
 									console.log('Online status: ', node.isOnline() ? 'online' : 'offline');
-									node.files.cat(web3.toAscii(transaction[4]), function (err, data) {
+									node.cat(web3.toAscii(transaction[4]), function (err, data) {
 										if (err) {
 											console.error('Error - ipfs files cat', err, data);
 										}

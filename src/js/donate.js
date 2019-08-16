@@ -59,9 +59,9 @@ Donate = {
                 node.once('ready', () => {
 
                     console.log('Online status: ', node.isOnline() ? 'online' : 'offline')
-                    node.files.cat(web3.toAscii(campaign[4]), function (err, data) {
+                    node.cat(web3.toAscii(campaign[4]), function (err, data) {
                         if (err) {
-                            console.error('Error - ipfs files cat', err, data)
+                            console.error('Error - ipfs files cat', err, data);
                         }
                         localStorage.setItem("campaignInfo", data.toString());
                         var infoJson = JSON.parse(localStorage.getItem("campaignInfo"));
@@ -86,7 +86,7 @@ Donate = {
                 "date": document.getElementById('date').value,
                 "numOfToken": document.getElementById('amount').value * -1
             };
-            node.files.add(new node.types.Buffer(JSON.stringify(exchangeJsonData)),
+            node.add(new Ipfs.Buffer(JSON.stringify(exchangeJsonData)),
                 function (error, filesAdded) {
                     if (error) {
                         console.log(error);
@@ -103,7 +103,7 @@ Donate = {
                 "onDate": document.getElementById("date").value,
                 "message": document.getElementById("message").value,
             };
-            node.files.add(new node.types.Buffer(JSON.stringify(transactionJsonData)),
+            node.add(new Ipfs.Buffer(JSON.stringify(transactionJsonData)),
                 function (error, filesAdded) {
                     if (error) {
                         console.log(error);

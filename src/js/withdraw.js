@@ -61,7 +61,7 @@ Withdraw = {
                 const node = new Ipfs();
                 node.once('ready', () => {
 
-                    node.files.cat(web3.toAscii(campaign[4]), function (err, data) {
+                    node.cat(web3.toAscii(campaign[4]), function (err, data) {
                         if (err) {
                             console.error('Error - ipfs files cat', err, data)
                         }
@@ -87,7 +87,7 @@ Withdraw = {
                 "date": document.getElementById('date').value,
                 "numOfToken": document.getElementById('amount').value
             };
-            node.files.add(new node.types.Buffer(JSON.stringify(exchangeJsonData)),
+            node.add(new Ipfs.Buffer(JSON.stringify(exchangeJsonData)),
                 function (error, filesAdded) {
                     if (error) {
                         console.log(error);
@@ -103,7 +103,7 @@ Withdraw = {
                 "onDate": document.getElementById("date").value,
                 "message": document.getElementById("message").value,
             };
-            node.files.add(new node.types.Buffer(JSON.stringify(withdrawJsonData)),
+            node.add(new Ipfs.Buffer(JSON.stringify(withdrawJsonData)),
                 function (error, filesAdded) {
                     if (error) {
                         console.log(error);
@@ -136,8 +136,8 @@ Withdraw = {
                             window.App.hexToBytes(localStorage.getItem("withdrawDataToIpfs"), "bytes"),
                             window.App.hexToBytes(localStorage.getItem("withdrawExchangeLogDataToIpfs"), "bytes"),  {
                                 from: account,
-                                gas: 5500000,
-                                gasPrice: 1000000000,
+                                gas: 350000,
+                                gasPrice: 100000,
                             });
                     }).then(function (result) {
                         console.log(result);

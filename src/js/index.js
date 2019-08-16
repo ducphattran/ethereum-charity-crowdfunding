@@ -45,12 +45,14 @@ Index = {
             for (var i = 0; i < length; i++) {
                 fundingInstance.getCampaign.call(i).then(function (campaign) {
                     const node = new Ipfs();
+                    
                     node.once('ready', () => {
 
-                        console.log('Online status: ', node.isOnline() ? 'online' : 'offline')
-                        node.files.cat(web3.toAscii(campaign[4]), function (err, data) {
+                        console.log('Online status: ', node.isOnline() ? 'online' : 'offline');
+                        // node.files.cat(web3.toAscii(campaign[4]), function (err, data) {
+                        node.cat(web3.toAscii(campaign[4]), function (err, data) {
                             if (err) {
-                                console.error('Error - ipfs files cat', err, data)
+                                console.error('Error - ipfs files cat', err, data);
                             }
                             localStorage.setItem("campaignList", data.toString());
                             // SC returns [id, creator's address, numOfToken, numOfTrans, ipfsHash]
@@ -77,7 +79,6 @@ Index = {
                             col6.appendChild(donateBtn);
                             // data from ipfs hash
                             var jsonData = JSON.parse(data.toString());
-                            console.log(jsonData);
 
                             // name of campaign
                             var nameOfCampaign = document.createElement("a");

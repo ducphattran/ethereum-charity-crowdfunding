@@ -63,7 +63,7 @@ Campaign = {
                 "description": document.getElementById("description").value,
             };
             // add to ipfs
-            node.files.add(new node.types.Buffer(JSON.stringify(jsonData)),
+            node.add(new Ipfs.Buffer(JSON.stringify(jsonData)),
                 function (error, filesAdded) {
                     if (error) {
                         console.log(error);

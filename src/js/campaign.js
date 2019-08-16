@@ -53,7 +53,7 @@ CampaignDetails = {
                     .then(function (campaign) {
                         // SC returns campaign[ id, creator's username, numOfToken, numOfTrans, ipfsHash]
                         // get data from cat ipfs
-                        node.files.cat(web3.toAscii(campaign[4]), function (err, data) {
+                        node.cat(web3.toAscii(campaign[4]), function (err, data) {
                             if (err) {
                                 console.error('Error - ipfs files cat', err, data);
                             }
@@ -92,7 +92,7 @@ CampaignDetails = {
     },
 
     displayTransaction: function () {
-        const node = new Ipfs()
+        const node = new Ipfs();
         node.once('ready', () => {
             console.log('Online status: ', node.isOnline() ? 'online' : 'offline');
             var idCampaign = localStorage.getItem("idCampaignToDisplay");
@@ -111,7 +111,7 @@ CampaignDetails = {
                         for (var i = 1; i < lengOfTrans; i++) {
                             fundingInstance.getTransactionById.call(i).then(function (transaction) {
                                 // SC returns [ id, fromUsername, toIdCamp, numOfToken, ipfsHash ] 
-                                node.files.cat(web3.toAscii(transaction[4]), function (err, data) {
+                                node.cat(web3.toAscii(transaction[4]), function (err, data) {
                                     if (err) {
                                         return console.error('Error - ipfs files cat', err, data);
                                     }
